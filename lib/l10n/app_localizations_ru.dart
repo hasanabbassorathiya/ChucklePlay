@@ -12,6 +12,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get slogan => 'IPTV-плеер с открытым исходным кодом';
 
   @override
+  String get home => 'Home';
+
+  @override
   String get search => 'Поиск';
 
   @override
@@ -317,6 +320,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get favorites => 'Избранное';
+
+  @override
+  String get no_favorites_found => 'No favorites found';
 
   @override
   String get see_all_favorites => 'Посмотреть Все';

@@ -1,11 +1,13 @@
+import 'package:lumio/services/firestore_service.dart';
 import 'package:drift/drift.dart';
-import 'package:another_iptv_player/database/database.dart';
-import 'package:another_iptv_player/models/content_type.dart';
-import 'package:another_iptv_player/models/watch_history.dart';
-import 'package:another_iptv_player/services/service_locator.dart';
+import 'package:lumio/database/database.dart';
+import 'package:lumio/models/content_type.dart';
+import 'package:lumio/models/watch_history.dart';
+import 'package:lumio/services/service_locator.dart';
 
 class WatchHistoryService {
   final _database = getIt<AppDatabase>();
+  final FirestoreService _firestoreService = getIt<FirestoreService>();
 
   WatchHistoryService();
 
@@ -13,6 +15,22 @@ class WatchHistoryService {
     await _database
         .into(_database.watchHistories)
         .insertOnConflictUpdate(history.toDriftCompanion());
+
+    // Sync to cloud
+    _firestoreService.syncWatchHistory(history);
+  }
+
+  Future<void> syncFromCloud() async {
+    try {
+      final cloudHistory = await _firestoreService.getWatchHistory();
+      for (var history in cloudHistory) {
+        await _database
+            .into(_database.watchHistories)
+            .insertOnConflictUpdate(history.toDriftCompanion());
+      }
+    } catch (e) {
+      // debugPrint('Watch history sync error: $e');
+    }
   }
 
   Future<WatchHistory?> getWatchHistory(

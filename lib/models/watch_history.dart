@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
-import 'package:another_iptv_player/database/database.dart';
-import 'package:another_iptv_player/models/content_type.dart';
+import 'package:lumio/database/database.dart';
+import 'package:lumio/models/content_type.dart';
 
 class WatchHistory {
   late String playlistId;
@@ -52,6 +52,38 @@ class WatchHistory {
       lastWatched: Value(lastWatched),
       imagePath: Value(imagePath),
       title: Value(title),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'playlistId': playlistId,
+      'contentType': contentType.index,
+      'streamId': streamId,
+      'seriesId': seriesId,
+      'watchDuration': watchDuration?.inMilliseconds,
+      'totalDuration': totalDuration?.inMilliseconds,
+      'lastWatched': lastWatched.toIso8601String(),
+      'imagePath': imagePath,
+      'title': title,
+    };
+  }
+
+  factory WatchHistory.fromJson(Map<String, dynamic> json) {
+    return WatchHistory(
+      playlistId: json['playlistId'],
+      contentType: ContentType.values[json['contentType']],
+      streamId: json['streamId'],
+      seriesId: json['seriesId'],
+      watchDuration: json['watchDuration'] != null
+          ? Duration(milliseconds: json['watchDuration'])
+          : null,
+      totalDuration: json['totalDuration'] != null
+          ? Duration(milliseconds: json['totalDuration'])
+          : null,
+      lastWatched: DateTime.parse(json['lastWatched']),
+      imagePath: json['imagePath'],
+      title: json['title'],
     );
   }
 }

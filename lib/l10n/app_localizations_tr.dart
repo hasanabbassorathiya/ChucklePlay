@@ -9,7 +9,10 @@ class AppLocalizationsTr extends AppLocalizations {
   AppLocalizationsTr([String locale = 'tr']) : super(locale);
 
   @override
-  String get slogan => 'Açık Kaynaklı IPTV Oynatıcı';
+  String get slogan => 'Akış Dünyanız.';
+
+  @override
+  String get home => 'Ana Sayfa';
 
   @override
   String get search => 'Ara';
@@ -33,7 +36,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get movie_not_found => 'Film bulunamadı';
 
   @override
-  String get see_all => 'Tümünü Görüntüle';
+  String get see_all => 'Tümünü Gör';
 
   @override
   String get preview => 'Önizleme';
@@ -70,7 +73,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get clear_all_confirmation_message =>
-      'Tüm izleme geçmişini silmek istediğinize emin misiniz?';
+      'Tüm geçmişi silmek istediğinizden emin misiniz?';
 
   @override
   String get try_again => 'Tekrar Dene';
@@ -79,8 +82,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get history => 'Geçmiş';
 
   @override
-  String get history_empty_message =>
-      'Video izlemeye başladığınızda burada görünecek';
+  String get history_empty_message => 'İzlediğiniz videolar burada görünecek';
 
   @override
   String get live => 'Canlı';
@@ -110,7 +112,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get category_id => 'Kategori ID';
 
   @override
-  String get channel_information => 'Kanal Bilgileri';
+  String get channel_information => 'Kanal Bilgisi';
 
   @override
   String get channel_id => 'Kanal ID';
@@ -147,7 +149,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get creation_date => 'Eklenme Tarihi';
 
   @override
-  String get release_date => 'Çıkış Tarihi';
+  String get release_date => 'Yayın Tarihi';
 
   @override
   String get genre => 'Tür';
@@ -162,13 +164,13 @@ class AppLocalizationsTr extends AppLocalizations {
   String get description => 'Açıklama';
 
   @override
-  String get video_track => 'Video Parçası';
+  String get video_track => 'Video İzi';
 
   @override
-  String get audio_track => 'Ses Parçası';
+  String get audio_track => 'Ses İzi';
 
   @override
-  String get subtitle_track => 'Altyazı Parçası';
+  String get subtitle_track => 'Altyazı İzi';
 
   @override
   String get settings => 'Ayarlar';
@@ -180,29 +182,29 @@ class AppLocalizationsTr extends AppLocalizations {
   String get app_language => 'Uygulama Dili';
 
   @override
-  String get continue_on_background => 'Arka Planda Çalmaya Devam Et';
+  String get continue_on_background => 'Arka Planda Oynatmaya Devam Et';
 
   @override
   String get continue_on_background_description =>
-      'Uygulama arka planda olsa da oynatmaya devam et';
+      'Uygulama arka plandayken oynatmaya devam et';
 
   @override
-  String get refresh_contents => 'İçerikleri Yenile';
+  String get refresh_contents => 'İçeriği Yenile';
 
   @override
   String get subtitle_settings => 'Altyazı Ayarları';
 
   @override
-  String get subtitle_settings_description => 'Altyazı görünümünü özelleştirin';
+  String get subtitle_settings_description => 'Altyazı görünümünü özelleştir';
 
   @override
-  String get sample_text => 'Örnek altyazı metni\nBu şekilde görünecek';
+  String get sample_text => 'Örnek altyazı metni\nBöyle görünecek';
 
   @override
   String get font_settings => 'Yazı Tipi Ayarları';
 
   @override
-  String get font_size => 'Yazı Tipi Boyutu';
+  String get font_size => 'Yazı Boyutu';
 
   @override
   String get font_height => 'Satır Yüksekliği';
@@ -214,7 +216,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get word_spacing => 'Kelime Aralığı';
 
   @override
-  String get padding => 'İç Boşluk';
+  String get padding => 'Dolgu';
 
   @override
   String get color_settings => 'Renk Ayarları';
@@ -229,7 +231,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get style_settings => 'Stil Ayarları';
 
   @override
-  String get font_weight => 'Yazı Tipi Kalınlığı';
+  String get font_weight => 'Yazı Kalınlığı';
 
   @override
   String get thin => 'İnce';
@@ -244,7 +246,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get bold => 'Kalın';
 
   @override
-  String get extreme_bold => 'Çok Kalın';
+  String get extreme_bold => 'Ekstra Kalın';
 
   @override
   String get text_align => 'Metin Hizalama';
@@ -259,37 +261,37 @@ class AppLocalizationsTr extends AppLocalizations {
   String get right => 'Sağ';
 
   @override
-  String get justify => 'Yasla';
+  String get justify => 'İki Yana Yasla';
 
   @override
   String get pick_color => 'Renk Seç';
 
   @override
-  String get my_playlists => 'Playlistlerim';
+  String get my_playlists => 'Çalma Listelerim';
 
   @override
-  String get create_new_playlist => 'Yeni Playlist Oluştur';
+  String get create_new_playlist => 'Yeni Çalma Listesi Oluştur';
 
   @override
-  String get loading_playlists => 'Playlistler Yükleniyor...';
+  String get loading_playlists => 'Çalma Listeleri Yükleniyor...';
 
   @override
-  String get playlist_list => 'Playlist Listesi';
+  String get playlist_list => 'Çalma Listesi Listesi';
 
   @override
-  String get playlist_information => 'Playlist Bilgileri';
+  String get playlist_information => 'Çalma Listesi Bilgisi';
 
   @override
-  String get playlist_name => 'Playlist Adı';
+  String get playlist_name => 'Çalma Listesi Adı';
 
   @override
-  String get playlist_name_placeholder => 'Playlist için bir isim girin';
+  String get playlist_name_placeholder => 'Çalma listeniz için bir ad';
 
   @override
-  String get playlist_name_required => 'Playlist adi gerekli';
+  String get playlist_name_required => 'Çalma listesi adı gereklidir';
 
   @override
-  String get playlist_name_min_2 => 'Playlist adı en az 2 karakter olmalı';
+  String get playlist_name_min_2 => 'Çalma listesi en az 2 karakter olmalıdır';
 
   @override
   String playlist_deleted(Object name) {
@@ -297,25 +299,28 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get playlist_delete_confirmation_title => 'Playlist\'i Sil';
+  String get playlist_delete_confirmation_title => 'Çalma Listesini Sil';
 
   @override
   String playlist_delete_confirmation_message(Object name) {
-    return '\'$name\' playlist\'ini silmek istediğinizden emin misiniz?\nBu işlem geri alınamaz.';
+    return '\'$name\' çalma listesini silmek istediğinizden emin misiniz?\nBu işlem geri alınamaz.';
   }
 
   @override
-  String get empty_playlist_title => 'Henüz Playlist Yok';
+  String get empty_playlist_title => 'Henüz Çalma Listesi Yok';
 
   @override
   String get empty_playlist_message =>
-      'İlk playlist\'inizi oluşturarak başlayın.\nXtream Code veya M3U formatında\nplaylist ekleyebilirsiniz.';
+      'İlk çalma listenizi oluşturarak başlayın.\nXtream Code veya M3U formatında çalma listeleri ekleyebilirsiniz.';
 
   @override
-  String get empty_playlist_button => 'İlk Playlist\'imi Oluştur';
+  String get empty_playlist_button => 'İlk Çalma Listemi Oluştur';
 
   @override
   String get favorites => 'Favoriler';
+
+  @override
+  String get no_favorites_found => 'Favori bulunamadı';
 
   @override
   String get see_all_favorites => 'Tümünü Gör';
@@ -330,15 +335,14 @@ class AppLocalizationsTr extends AppLocalizations {
   String get remove_from_favorites => 'Favorilerden Kaldır';
 
   @override
-  String get select_playlist_type => 'Playlist Türü Seçin';
+  String get select_playlist_type => 'Çalma Listesi Türünü Seç';
 
   @override
   String get select_playlist_message =>
-      'Oluşturmak istediğiniz playlist türünü seçin';
+      'Oluşturmak istediğiniz çalma listesi türünü seçin';
 
   @override
-  String get xtream_code_title =>
-      'API URL, Kullanıcı Adı ve Şifre ile bağlanın';
+  String get xtream_code_title => 'API URL, Kullanıcı Adı ve Şifre ile Bağlan';
 
   @override
   String get xtream_code_description =>
@@ -346,13 +350,13 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get select_playlist_type_footer =>
-      'Playlist bilgileriniz güvenli bir şekilde cihazınızda saklanır.';
+      'Çalma listesi bilgileriniz cihazınızda güvenli bir şekilde saklanır.';
 
   @override
   String get api_url => 'API URL';
 
   @override
-  String get api_url_required => 'API URL gerekli';
+  String get api_url_required => 'API URL gereklidir';
 
   @override
   String get username => 'Kullanıcı Adı';
@@ -361,22 +365,22 @@ class AppLocalizationsTr extends AppLocalizations {
   String get username_placeholder => 'Kullanıcı adınızı girin';
 
   @override
-  String get username_required => 'Kullanıcı Adı gerekli';
+  String get username_required => 'Kullanıcı adı gereklidir';
 
   @override
-  String get username_min_3 => 'Kullanıcı adı en az 3 karakter olmalı';
+  String get username_min_3 => 'Kullanıcı adı en az 3 karakter olmalıdır';
 
   @override
-  String get password => 'Parola';
+  String get password => 'Şifre';
 
   @override
-  String get password_placeholder => 'Parolanızı girin';
+  String get password_placeholder => 'Şifrenizi girin';
 
   @override
-  String get password_required => 'Parola gerekli';
+  String get password_required => 'Şifre gereklidir';
 
   @override
-  String get password_min_3 => 'Parola en az 3 karakter olmalı';
+  String get password_min_3 => 'Şifre en az 3 karakter olmalıdır';
 
   @override
   String get server_url => 'Sunucu URL';
@@ -385,7 +389,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get submitting => 'Kaydediliyor...';
 
   @override
-  String get submit_create_playlist => 'Playlist\'i Kaydet';
+  String get submit_create_playlist => 'Çalma Listesini Kaydet';
 
   @override
   String get subscription_details => 'Abonelik Detayları';
@@ -404,13 +408,13 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get connected => 'Bağlı';
+  String get connected => 'Bağlandı';
 
   @override
-  String get no_connection => 'Bağlantı yok';
+  String get no_connection => 'Bağlantı Yok';
 
   @override
-  String get expired => 'Süresi dolmuş';
+  String get expired => 'Süresi Doldu';
 
   @override
   String get active_connection => 'Aktif Bağlantı';
@@ -419,7 +423,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get maximum_connection => 'Maksimum Bağlantı';
 
   @override
-  String get server_information => 'Sunucu Bilgileri';
+  String get server_information => 'Sunucu Bilgisi';
 
   @override
   String get timezone => 'Saat Dilimi';
@@ -429,7 +433,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get all_datas_are_stored_in_device =>
-      'Tüm bilgiler güvenli bir şekilde cihazınızda saklanır';
+      'Tüm veriler cihazınızda güvenli bir şekilde saklanır';
 
   @override
   String get url_format_validate_message =>
@@ -437,21 +441,21 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get url_format_validate_error =>
-      'Geçerli bir URL giriniz (http:// veya https:// ile başlamalı)';
+      'Lütfen geçerli bir URL girin (http:// veya https:// ile başlamalıdır)';
 
   @override
   String get playlist_name_already_exists =>
-      'Bu isimde bir playlist zaten mevcut';
+      'Bu isimde bir çalma listesi zaten var';
 
   @override
   String get invalid_credentials =>
-      'IPTV sağlayıcınızdan cevap alınamadı, bilgilerinizi kontrol edin';
+      'IPTV sağlayıcınızdan yanıt alınamadı, lütfen bilgilerinizi kontrol edin';
 
   @override
-  String get error_occurred => 'Hata oluştu';
+  String get error_occurred => 'Bir hata oluştu';
 
   @override
-  String get connecting => 'Bağlantı kuruluyor';
+  String get connecting => 'Bağlanıyor';
 
   @override
   String get preparing_categories => 'Kategoriler hazırlanıyor';
@@ -484,7 +488,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get preparing_series => 'Dizi arşivi hazırlanıyor';
+  String get preparing_series => 'Dizi kütüphanesi hazırlanıyor';
 
   @override
   String get preparing_series_exception_1 => 'Diziler alınamadı';
@@ -503,25 +507,26 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get m3u_playlist_title => 'M3U dosyası veya URL ile playlist ekle';
+  String get m3u_playlist_title =>
+      'M3U dosyası veya URL ile çalma listesi ekle';
 
   @override
   String get m3u_playlist_description =>
-      'Geleneksel M3U format dosyalarını destekler';
+      'Geleneksel M3U formatındaki dosyaları destekler';
 
   @override
-  String get m3u_playlist => 'M3U Playlist';
+  String get m3u_playlist => 'M3U Çalma Listesi';
 
   @override
   String get m3u_playlist_load_description =>
-      'M3U playlist dosyası veya URL\'si ile IPTV kanallarını yükleyin';
+      'M3U çalma listesi dosyası veya URL\'si ile IPTV kanallarını yükle';
 
   @override
-  String get playlist_name_hint => 'Playlist adını girin';
+  String get playlist_name_hint => 'Çalma listesi adını girin';
 
   @override
   String get playlist_name_min_length =>
-      'Playlist adı en az 2 karakter olmalıdır';
+      'Çalma listesi adı en az 2 karakter olmalıdır';
 
   @override
   String get source_type => 'Kaynak Türü';
@@ -536,7 +541,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get m3u_url => 'M3U URL';
 
   @override
-  String get m3u_url_hint => 'http://example.com/playlist.m3u';
+  String get m3u_url_hint => 'http://ornek.com/playlist.m3u';
 
   @override
   String get m3u_url_required => 'M3U URL gereklidir';
@@ -554,7 +559,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get file_selected => 'Dosya seçildi';
 
   @override
-  String get select_m3u_file => 'M3U dosyası seçin (.m3u, .m3u8)';
+  String get select_m3u_file => 'M3U dosyası seç (.m3u, .m3u8)';
 
   @override
   String get please_select_m3u_file => 'Lütfen bir M3U dosyası seçin';
@@ -563,10 +568,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get file_selection_error => 'Dosya seçilirken hata oluştu';
 
   @override
-  String get processing => 'İşlem yapılıyor...';
+  String get processing => 'İşleniyor...';
 
   @override
-  String get create_playlist => 'Playlist Oluştur';
+  String get create_playlist => 'Çalma Listesi Oluştur';
 
   @override
   String get error_occurred_title => 'Hata Oluştu';
@@ -593,7 +598,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get not_categorized => 'Kategorilendirilmemiş';
+  String get not_categorized => 'Kategorize Edilmemiş';
 
   @override
   String get loading_lists => 'Listeler Yükleniyor...';
@@ -642,7 +647,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get select_all => 'Tümünü Seç';
 
   @override
-  String get deselect_all => 'Tümünün Seçimini Kaldır';
+  String get deselect_all => 'Seçimi Kaldır';
 
   @override
   String get hide_category => 'Kategorileri Gizle';
@@ -668,10 +673,10 @@ class AppLocalizationsTr extends AppLocalizations {
       '30 günden eski izleme kayıtlarını silmek istediğinizden emin misiniz?';
 
   @override
-  String get clear_old => 'Temizle';
+  String get clear_old => 'Eskileri Temizle';
 
   @override
-  String get clear_all_history => 'Tümünü Temizle';
+  String get clear_all_history => 'Tüm Geçmişi Temizle';
 
   @override
   String get clear_all_history_confirmation =>
@@ -699,14 +704,14 @@ class AppLocalizationsTr extends AppLocalizations {
   String get new_ep => 'Yeni';
 
   @override
-  String get continue_watching => 'Devam Et';
+  String get continue_watching => 'İzlemeye Devam Et';
 
   @override
   String get start_watching => 'İzlemeye Başla';
 
   @override
   String continue_watching_label(String season, String episode) {
-    return 'Devam Et: $season. Sezon $episode. Bölüm';
+    return 'Devam Et: S$season B$episode';
   }
 
   @override
@@ -727,20 +732,20 @@ class AppLocalizationsTr extends AppLocalizations {
       'Sağ tarafta dikey kaydırarak sesi kontrol et';
 
   @override
-  String get seek_gesture => 'İleri/Sar Hareketi';
+  String get seek_gesture => 'Sarma Hareketi';
 
   @override
-  String get seek_gesture_description => 'Yatay kaydırarak ileri/sar';
+  String get seek_gesture_description => 'Yatay kaydırarak ileri/geri sar';
 
   @override
-  String get speed_up_on_long_press => 'Uzun Basışta Hızlandır';
+  String get speed_up_on_long_press => 'Uzun Basınca Hızlandır';
 
   @override
   String get speed_up_on_long_press_description =>
-      'Uzun basıldığında oynatmayı hızlandır';
+      'Ekrana uzun basıldığında oynatma hızını artır';
 
   @override
-  String get seek_on_double_tap => 'Çift Dokunuşta İleri/Sar';
+  String get seek_on_double_tap => 'Çift Dokunma ile Sarma';
 
   @override
   String get seek_on_double_tap_description => 'Çift dokunarak ileri/geri sar';
@@ -759,7 +764,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get support_on_github_description =>
-      'Projeye GitHub üzerinden katkıda bulunun';
+      'Projeye GitHub üzerinden katkıda bulun';
 
   @override
   String get select_channel => 'Kanal Seç';
@@ -789,7 +794,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get video_info => 'Video Bilgileri';
+  String get video_info => 'Video Bilgisi';
 
   @override
   String get video_info_not_found => 'Video bilgisi bulunamadı';
@@ -798,7 +803,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get name => 'İsim';
 
   @override
-  String get content_type => 'İçerik Tipi';
+  String get content_type => 'İçerik Türü';
 
   @override
   String get plot => 'Konu';
@@ -810,7 +815,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get url_copied_to_clipboard => 'URL panoya kopyalandı';
 
   @override
-  String get stream_id => 'Stream ID';
+  String get stream_id => 'Yayın ID';
 
   @override
   String get epg_channel_id => 'EPG Kanal ID';
@@ -822,7 +827,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get add_to_favorites => 'Favorilere Ekle';
 
   @override
-  String get no_tracks_available => 'Parça bulunamadı';
+  String get no_tracks_available => 'İz bulunamadı';
 
   @override
   String get live_stream_content_type => 'Canlı Yayın';

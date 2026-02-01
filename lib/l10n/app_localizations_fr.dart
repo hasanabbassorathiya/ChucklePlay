@@ -9,13 +9,16 @@ class AppLocalizationsFr extends AppLocalizations {
   AppLocalizationsFr([String locale = 'fr']) : super(locale);
 
   @override
-  String get slogan => 'Lecteur IPTV Open Source';
+  String get slogan => 'Votre monde de streaming.';
+
+  @override
+  String get home => 'Accueil';
 
   @override
   String get search => 'Rechercher';
 
   @override
-  String get search_live_stream => 'Rechercher un direct';
+  String get search_live_stream => 'Rechercher un flux en direct';
 
   @override
   String get search_movie => 'Rechercher un film';
@@ -28,7 +31,7 @@ class AppLocalizationsFr extends AppLocalizations {
       'Aucun contenu trouvé dans cette catégorie';
 
   @override
-  String get live_stream_not_found => 'Aucun direct trouvé';
+  String get live_stream_not_found => 'Aucun flux en direct trouvé';
 
   @override
   String get movie_not_found => 'Aucun film trouvé';
@@ -40,7 +43,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get preview => 'Aperçu';
 
   @override
-  String get info => 'Informations';
+  String get info => 'Infos';
 
   @override
   String get close => 'Fermer';
@@ -86,7 +89,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get live => 'Direct';
 
   @override
-  String get live_streams => 'Diffusions en direct';
+  String get live_streams => 'Flux en direct';
 
   @override
   String get on_live => 'En direct';
@@ -110,7 +113,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get category_id => 'ID de catégorie';
 
   @override
-  String get channel_information => 'Informations de la chaîne';
+  String get channel_information => 'Informations sur la chaîne';
 
   @override
   String get channel_id => 'ID de la chaîne';
@@ -184,7 +187,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get continue_on_background_description =>
-      'Continuer la lecture même quand l\'app est en arrière-plan';
+      'Continuer la lecture même lorsque l\'application est en arrière-plan';
 
   @override
   String get refresh_contents => 'Actualiser le contenu';
@@ -204,7 +207,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get font_settings => 'Paramètres de police';
 
   @override
-  String get font_size => 'Taille de police';
+  String get font_size => 'Taille de la police';
 
   @override
   String get font_height => 'Hauteur de ligne';
@@ -216,7 +219,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get word_spacing => 'Espacement des mots';
 
   @override
-  String get padding => 'Espacement interne';
+  String get padding => 'Rembourrage';
 
   @override
   String get color_settings => 'Paramètres de couleur';
@@ -231,7 +234,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get style_settings => 'Paramètres de style';
 
   @override
-  String get font_weight => 'Épaisseur de police';
+  String get font_weight => 'Graisse de la police';
 
   @override
   String get thin => 'Fin';
@@ -261,7 +264,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get right => 'Droite';
 
   @override
-  String get justify => 'Justifié';
+  String get justify => 'Justifier';
 
   @override
   String get pick_color => 'Choisir une couleur';
@@ -270,58 +273,63 @@ class AppLocalizationsFr extends AppLocalizations {
   String get my_playlists => 'Mes listes de lecture';
 
   @override
-  String get create_new_playlist => 'Créer une nouvelle liste';
+  String get create_new_playlist => 'Créer une nouvelle liste de lecture';
 
   @override
-  String get loading_playlists => 'Chargement des listes...';
+  String get loading_playlists => 'Chargement des listes de lecture...';
 
   @override
   String get playlist_list => 'Liste de lecture';
 
   @override
-  String get playlist_information => 'Informations de la liste';
+  String get playlist_information => 'Informations sur la liste de lecture';
 
   @override
-  String get playlist_name => 'Nom de la liste';
+  String get playlist_name => 'Nom de la liste de lecture';
 
   @override
-  String get playlist_name_placeholder => 'Entrez un nom pour votre liste';
+  String get playlist_name_placeholder => 'Nom pour votre liste de lecture';
 
   @override
-  String get playlist_name_required => 'Le nom de la liste est requis';
+  String get playlist_name_required =>
+      'Le nom de la liste de lecture est requis';
 
   @override
   String get playlist_name_min_2 =>
-      'Le nom doit contenir au moins 2 caractères';
+      'Le nom de la liste de lecture doit comporter au moins 2 caractères';
 
   @override
   String playlist_deleted(Object name) {
-    return '$name supprimée';
+    return '$name supprimé';
   }
 
   @override
-  String get playlist_delete_confirmation_title => 'Supprimer la liste';
+  String get playlist_delete_confirmation_title =>
+      'Supprimer la liste de lecture';
 
   @override
   String playlist_delete_confirmation_message(Object name) {
-    return 'Êtes-vous sûr de vouloir supprimer la liste \'$name\' ?\nCette action ne peut pas être annulée.';
+    return 'Êtes-vous sûr de vouloir supprimer la liste de lecture \'$name\' ?\nCette action est irréversible.';
   }
 
   @override
-  String get empty_playlist_title => 'Aucune liste pour le moment';
+  String get empty_playlist_title => 'Pas encore de liste de lecture';
 
   @override
   String get empty_playlist_message =>
-      'Commencez par créer votre première liste de lecture.\nVous pouvez ajouter des listes au format Xtream Code ou M3U.';
+      'Commencez par créer votre première liste de lecture.\nVous pouvez ajouter des listes de lecture au format Xtream Code ou M3U.';
 
   @override
-  String get empty_playlist_button => 'Créer ma première liste';
+  String get empty_playlist_button => 'Créer ma première liste de lecture';
 
   @override
   String get favorites => 'Favoris';
 
   @override
-  String get see_all_favorites => 'Voir Tout';
+  String get no_favorites_found => 'Aucun favori trouvé';
+
+  @override
+  String get see_all_favorites => 'Voir tout';
 
   @override
   String get added_to_favorites => 'Ajouté aux favoris';
@@ -330,18 +338,18 @@ class AppLocalizationsFr extends AppLocalizations {
   String get removed_from_favorites => 'Retiré des favoris';
 
   @override
-  String get remove_from_favorites => 'Retirer des Favoris';
+  String get remove_from_favorites => 'Retirer des favoris';
 
   @override
-  String get select_playlist_type => 'Sélectionner le type de liste';
+  String get select_playlist_type => 'Sélectionner le type de liste de lecture';
 
   @override
   String get select_playlist_message =>
-      'Choisissez le type de liste que vous voulez créer';
+      'Choisissez le type de liste de lecture que vous souhaitez créer';
 
   @override
   String get xtream_code_title =>
-      'Se connecter avec l\'URL API, nom d\'utilisateur et mot de passe';
+      'Se connecter avec l\'URL de l\'API, le nom d\'utilisateur et le mot de passe';
 
   @override
   String get xtream_code_description =>
@@ -349,13 +357,13 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get select_playlist_type_footer =>
-      'Les informations de votre liste sont stockées en sécurité sur votre appareil.';
+      'Les informations de votre liste de lecture sont stockées en toute sécurité sur votre appareil.';
 
   @override
   String get api_url => 'URL de l\'API';
 
   @override
-  String get api_url_required => 'URL de l\'API requise';
+  String get api_url_required => 'L\'URL de l\'API est requise';
 
   @override
   String get username => 'Nom d\'utilisateur';
@@ -364,11 +372,11 @@ class AppLocalizationsFr extends AppLocalizations {
   String get username_placeholder => 'Entrez votre nom d\'utilisateur';
 
   @override
-  String get username_required => 'Nom d\'utilisateur requis';
+  String get username_required => 'Le nom d\'utilisateur est requis';
 
   @override
   String get username_min_3 =>
-      'Le nom d\'utilisateur doit contenir au moins 3 caractères';
+      'Le nom d\'utilisateur doit comporter au moins 3 caractères';
 
   @override
   String get password => 'Mot de passe';
@@ -377,20 +385,20 @@ class AppLocalizationsFr extends AppLocalizations {
   String get password_placeholder => 'Entrez votre mot de passe';
 
   @override
-  String get password_required => 'Mot de passe requis';
+  String get password_required => 'Le mot de passe est requis';
 
   @override
   String get password_min_3 =>
-      'Le mot de passe doit contenir au moins 3 caractères';
+      'Le mot de passe doit comporter au moins 3 caractères';
 
   @override
   String get server_url => 'URL du serveur';
 
   @override
-  String get submitting => 'Sauvegarde...';
+  String get submitting => 'Enregistrement...';
 
   @override
-  String get submit_create_playlist => 'Sauvegarder la liste';
+  String get submit_create_playlist => 'Enregistrer la liste de lecture';
 
   @override
   String get subscription_details => 'Détails de l\'abonnement';
@@ -424,7 +432,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get maximum_connection => 'Connexion maximale';
 
   @override
-  String get server_information => 'Informations du serveur';
+  String get server_information => 'Informations sur le serveur';
 
   @override
   String get timezone => 'Fuseau horaire';
@@ -434,11 +442,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get all_datas_are_stored_in_device =>
-      'Toutes les données sont stockées en sécurité sur votre appareil';
+      'Toutes les données sont stockées en toute sécurité sur votre appareil';
 
   @override
   String get url_format_validate_message =>
-      'Le format de l\'URL doit être comme http://serveur:port';
+      'Le format de l\'URL doit être http://serveur:port';
 
   @override
   String get url_format_validate_error =>
@@ -446,17 +454,17 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get playlist_name_already_exists =>
-      'Une liste avec ce nom existe déjà';
+      'Une liste de lecture portant ce nom existe déjà';
 
   @override
   String get invalid_credentials =>
-      'Impossible d\'obtenir une réponse de votre fournisseur IPTV, vérifiez vos informations';
+      'Impossible d\'obtenir une réponse de votre fournisseur IPTV, veuillez vérifier vos informations';
 
   @override
   String get error_occurred => 'Une erreur s\'est produite';
 
   @override
-  String get connecting => 'Connexion en cours';
+  String get connecting => 'Connexion';
 
   @override
   String get preparing_categories => 'Préparation des catégories';
@@ -511,25 +519,25 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get m3u_playlist_title =>
-      'Ajouter une playlist avec un fichier M3U ou une URL';
+      'Ajouter une liste de lecture avec un fichier M3U ou une URL';
 
   @override
   String get m3u_playlist_description =>
       'Prend en charge les fichiers au format M3U traditionnel';
 
   @override
-  String get m3u_playlist => 'Playlist M3U';
+  String get m3u_playlist => 'Liste de lecture M3U';
 
   @override
   String get m3u_playlist_load_description =>
-      'Charger les chaînes IPTV avec un fichier de playlist M3U ou une URL';
+      'Charger les chaînes IPTV avec un fichier ou une URL de liste de lecture M3U';
 
   @override
-  String get playlist_name_hint => 'Entrez le nom de la playlist';
+  String get playlist_name_hint => 'Entrez le nom de la liste de lecture';
 
   @override
   String get playlist_name_min_length =>
-      'Le nom de la playlist doit comporter au moins 2 caractères';
+      'Le nom de la liste de lecture doit comporter au moins 2 caractères';
 
   @override
   String get source_type => 'Type de source';
@@ -544,7 +552,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get m3u_url => 'URL M3U';
 
   @override
-  String get m3u_url_hint => 'http://example.com/playlist.m3u';
+  String get m3u_url_hint => 'http://exemple.com/playlist.m3u';
 
   @override
   String get m3u_url_required => 'L\'URL M3U est requise';
@@ -572,17 +580,17 @@ class AppLocalizationsFr extends AppLocalizations {
   String get file_selection_error => 'Erreur lors de la sélection du fichier';
 
   @override
-  String get processing => 'Traitement en cours...';
+  String get processing => 'Traitement...';
 
   @override
-  String get create_playlist => 'Créer une playlist';
+  String get create_playlist => 'Créer une liste de lecture';
 
   @override
   String get error_occurred_title => 'Erreur survenue';
 
   @override
   String get m3u_info_message =>
-      'Toutes les données sont stockées en toute sécurité sur votre appareil.\nFormats pris en charge : .m3u, .m3u8\nFormat d\'URL : Doit commencer par http:// ou https://';
+      'Toutes les données sont stockées en toute sécurité sur votre appareil.\nFormats pris en charge : .m3u, .m3u8\nFormat de l\'URL : Doit commencer par http:// ou https://';
 
   @override
   String get m3u_parse_error => 'Erreur d\'analyse M3U';
@@ -645,13 +653,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get image_loading => 'Chargement de l\'image...';
 
   @override
-  String get image_not_found => 'Image non trouvée';
+  String get image_not_found => 'Image introuvable';
 
   @override
-  String get select_all => 'Tout Sélectionner';
+  String get select_all => 'Tout sélectionner';
 
   @override
-  String get deselect_all => 'Tout Désélectionner';
+  String get deselect_all => 'Tout désélectionner';
 
   @override
   String get hide_category => 'Masquer les catégories';
@@ -664,7 +672,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get remove_from_history_confirmation =>
-      'Êtes-vous sûr de vouloir retirer cet élément de l\'historique de lecture ?';
+      'Êtes-vous sûr de vouloir retirer cet élément de l\'historique de visionnage ?';
 
   @override
   String get remove => 'Retirer';
@@ -674,7 +682,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get clear_old_records_confirmation =>
-      'Êtes-vous sûr de vouloir supprimer les enregistrements de lecture de plus de 30 jours ?';
+      'Êtes-vous sûr de vouloir supprimer les enregistrements de visionnage datant de plus de 30 jours ?';
 
   @override
   String get clear_old => 'Effacer anciens';
@@ -684,7 +692,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get clear_all_history_confirmation =>
-      'Êtes-vous sûr de vouloir supprimer tout l\'historique de lecture ?';
+      'Êtes-vous sûr de vouloir supprimer tout l\'historique de visionnage ?';
 
   @override
   String get appearance => 'Apparence';
@@ -693,7 +701,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get theme => 'Thème';
 
   @override
-  String get standard => 'Défaut';
+  String get standard => 'Par défaut';
 
   @override
   String get light => 'Clair';
@@ -715,7 +723,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String continue_watching_label(String season, String episode) {
-    return 'Continuer : S $season Épisode $episode';
+    return 'Continuer : S$season É$episode';
   }
 
   @override
@@ -726,14 +734,14 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get brightness_gesture_description =>
-      'Contrôler la luminosité en glissant verticalement sur le côté gauche';
+      'Contrôlez la luminosité en glissant verticalement sur le côté gauche';
 
   @override
   String get volume_gesture => 'Geste de volume';
 
   @override
   String get volume_gesture_description =>
-      'Contrôler le volume en glissant verticalement sur le côté droit';
+      'Contrôlez le volume en glissant verticalement sur le côté droit';
 
   @override
   String get seek_gesture => 'Geste de recherche';
@@ -743,18 +751,18 @@ class AppLocalizationsFr extends AppLocalizations {
       'Rechercher en glissant horizontalement';
 
   @override
-  String get speed_up_on_long_press => 'Accélérer avec appui long';
+  String get speed_up_on_long_press => 'Accélérer par appui long';
 
   @override
   String get speed_up_on_long_press_description =>
       'Accélérer la lecture lors d\'un appui long';
 
   @override
-  String get seek_on_double_tap => 'Rechercher avec double tap';
+  String get seek_on_double_tap => 'Rechercher par double appui';
 
   @override
   String get seek_on_double_tap_description =>
-      'Rechercher avant/arrière avec double tap';
+      'Rechercher en avant/arrière par double appui';
 
   @override
   String get copied_to_clipboard => 'Copié dans le presse-papiers';
@@ -772,7 +780,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get support_on_github_description => 'Contribuer au projet sur GitHub';
 
   @override
-  String get select_channel => 'Sélectionner la Chaîne';
+  String get select_channel => 'Sélectionner une chaîne';
 
   @override
   String get episodes => 'Épisodes';
@@ -799,7 +807,7 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get video_info => 'Informations Vidéo';
+  String get video_info => 'Informations vidéo';
 
   @override
   String get video_info_not_found => 'Informations vidéo introuvables';
@@ -808,34 +816,34 @@ class AppLocalizationsFr extends AppLocalizations {
   String get name => 'Nom';
 
   @override
-  String get content_type => 'Type de Contenu';
+  String get content_type => 'Type de contenu';
 
   @override
   String get plot => 'Intrigue';
 
   @override
-  String get duration_unknown => 'Inconnu';
+  String get duration_unknown => 'Inconnue';
 
   @override
   String get url_copied_to_clipboard => 'URL copiée dans le presse-papiers';
 
   @override
-  String get stream_id => 'ID de Flux';
+  String get stream_id => 'ID de flux';
 
   @override
-  String get epg_channel_id => 'ID de Chaîne EPG';
+  String get epg_channel_id => 'ID de chaîne EPG';
 
   @override
   String get category => 'Catégorie';
 
   @override
-  String get add_to_favorites => 'Ajouter aux Favoris';
+  String get add_to_favorites => 'Ajouter aux favoris';
 
   @override
   String get no_tracks_available => 'Aucune piste disponible';
 
   @override
-  String get live_stream_content_type => 'Diffusion en Direct';
+  String get live_stream_content_type => 'Flux en direct';
 
   @override
   String get movie_content_type => 'Film';
@@ -844,7 +852,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get series_content_type => 'Série';
 
   @override
-  String get last_update => 'Dernière Mise à Jour';
+  String get last_update => 'Dernière mise à jour';
 
   @override
   String get minutes => 'min';

@@ -1,4 +1,4 @@
-import 'package:another_iptv_player/utils/type_convertions.dart';
+import 'package:lumio/utils/type_convertions.dart';
 
 class Playlist {
   final String id;
@@ -7,6 +7,7 @@ class Playlist {
   final String? url;
   final String? username;
   final String? password;
+  final String? epgUrl;
   final DateTime createdAt;
 
   Playlist({
@@ -16,6 +17,7 @@ class Playlist {
     this.url,
     this.username,
     this.password,
+    this.epgUrl,
     required this.createdAt,
   });
 
@@ -27,6 +29,7 @@ class Playlist {
       'url': url,
       'username': username,
       'password': password,
+      'epgUrl': epgUrl,
       'createdAt': createdAt.toIso8601String(),
     };
   }
@@ -42,6 +45,7 @@ class Playlist {
       url: safeString(json['url']),
       username: safeString(json['username']),
       password: safeString(json['password']),
+      epgUrl: safeString(json['epgUrl']),
       createdAt:
           DateTime.tryParse(safeString(json['createdAt'])) ?? DateTime.now(),
     );

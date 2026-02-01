@@ -3,7 +3,7 @@
 layout: home
 
 hero:
-  name: "Another IPTV Player"
+  name: "Lumio Player"
   tagline: "Free & Open Source IPTV Streaming Solution"
   actions:
     - theme: brand
@@ -34,7 +34,7 @@ features:
 
 ## Screenshots
 
-Explore Another IPTV Player on different platforms. See how the main screen, playlist, and settings panel look on each device.
+Explore Lumio Player on different platforms. See how the main screen, playlist, and settings panel look on each device.
 
 ### iPhone
 <div class="screenshot-gallery">

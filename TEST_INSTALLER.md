@@ -25,8 +25,8 @@ Bu en kolay ve güvenilir yöntemdir. GitHub Actions otomatik olarak installer'�
    - Build tamamlandığında, "Releases" sayfasında installer dosyasını göreceksiniz
 
 4. **Test edin:**
-   - Release sayfasından `another-iptv-player-windows-setup-v1.3.1.zip` dosyasını indirin
-   - ZIP'i çıkarın ve `another-iptv-player-windows-setup-v1.3.1.exe` dosyasını çalıştırın
+   - Release sayfasından `lumio-windows-setup-v1.3.1.zip` dosyasını indirin
+   - ZIP'i çıkarın ve `lumio-windows-setup-v1.3.1.exe` dosyasını çalıştırın
    - Kurulum sihirbazını takip edin
    - Kurulumun başarılı olduğunu kontrol edin
 
@@ -59,7 +59,7 @@ Eğer Windows makineniz varsa, lokal olarak test edebilirsiniz.
    ```
 
 4. **Installer'ı test edin:**
-   - `another-iptv-player-windows-setup.exe` dosyası oluşturulacak
+   - `lumio-windows-setup.exe` dosyası oluşturulacak
    - Bu dosyayı çalıştırarak kurulumu test edin
    - Program Files'a kurulduğunu kontrol edin
    - Başlat menüsünde kısayol olduğunu kontrol edin

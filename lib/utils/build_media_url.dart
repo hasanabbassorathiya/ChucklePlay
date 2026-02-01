@@ -1,10 +1,12 @@
-import 'package:another_iptv_player/services/app_state.dart';
+import 'package:lumio/services/app_state.dart';
 
 import '../models/content_type.dart';
 import '../models/playlist_content_model.dart';
 
 String buildMediaUrl(ContentItem contentItem) {
-  var playlist = AppState.currentPlaylist!;
+  var playlist = AppState.currentPlaylist;
+  if (playlist == null) return '';
+
   switch (contentItem.contentType) {
     case ContentType.liveStream:
       return '${playlist.url}/${playlist.username}/${playlist.password}/${contentItem.id}';

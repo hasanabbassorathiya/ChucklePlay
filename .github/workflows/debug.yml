@@ -1,0 +1,124 @@
+name: Debug Stage
+
+on:
+  pull_request:
+    branches: [ main ]
+    types: [ opened, synchronize, reopened ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.35.7'
+          channel: 'stable'
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Generate files
+        run: flutter packages pub run build_runner build --delete-conflicting-outputs
+      - name: Analyze
+        run: flutter analyze
+
+  build-android-debug:
+    name: Build Android (Debug)
+    needs: analyze
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.35.7'
+          channel: 'stable'
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Generate files
+        run: flutter packages pub run build_runner build --delete-conflicting-outputs
+      - name: Build Debug APK
+        run: flutter build apk --debug
+
+  build-linux-debug:
+    name: Build Linux (Debug)
+    needs: analyze
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Linux dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev libstdc++-12-dev \
+            libasound2-dev libpulse-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev \
+            libunwind-dev libmpv-dev mpv libavcodec-dev libavformat-dev libavutil-dev \
+            libswscale-dev libavfilter-dev libavdevice-dev libswresample-dev
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.35.7'
+          channel: 'stable'
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Generate files
+        run: flutter packages pub run build_runner build --delete-conflicting-outputs
+      - name: Build Linux Debug
+        run: flutter build linux --debug
+
+  build-windows-debug:
+    name: Build Windows (Debug)
+    needs: analyze
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.35.7'
+          channel: 'stable'
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Generate files
+        run: flutter packages pub run build_runner build --delete-conflicting-outputs
+      - name: Build Windows Debug
+        run: flutter build windows --debug
+
+  build-macos-debug:
+    name: Build macOS (Debug)
+    needs: analyze
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.35.7'
+          channel: 'stable'
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Generate files
+        run: flutter packages pub run build_runner build --delete-conflicting-outputs
+      - name: Build macOS Debug
+        run: flutter build macos --debug
+
+  build-web-debug:
+    name: Build Web (Debug)
+    needs: analyze
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.35.7'
+          channel: 'stable'
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Generate files
+        run: flutter packages pub run build_runner build --delete-conflicting-outputs
+      - name: Build Web Debug
+        run: flutter build web --debug

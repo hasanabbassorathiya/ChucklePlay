@@ -1,4 +1,10 @@
-# [](https://github.com/bsogulcan/iptv-player/compare/v1.2.0...v) (2025-11-30)
+# Lumio Player Changelog
+
+## [1.3.0] - 2025-02-01
+- **Rebrand:** Project renamed to Lumio Player.
+- **Package:** Package name updated to `com.lumio.player`.
+
+# [Old Changelog](https://github.com/bsogulcan/iptv-player/compare/v1.2.0...v) (2025-11-30)
 
 
 ### Bug Fixes

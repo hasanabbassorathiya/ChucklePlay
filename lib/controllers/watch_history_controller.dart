@@ -1,15 +1,17 @@
-import 'package:another_iptv_player/utils/get_playlist_type.dart';
+import 'package:lumio/features/player/episode_screen.dart';
+import 'package:lumio/features/player/m3u_player_screen.dart';
+import 'package:lumio/utils/get_playlist_type.dart';
 import 'package:flutter/material.dart';
-import 'package:another_iptv_player/database/database.dart';
-import 'package:another_iptv_player/models/content_type.dart';
-import 'package:another_iptv_player/models/playlist_content_model.dart';
-import 'package:another_iptv_player/models/watch_history.dart';
-import 'package:another_iptv_player/services/app_state.dart';
-import 'package:another_iptv_player/services/watch_history_service.dart';
-import 'package:another_iptv_player/utils/navigate_by_content_type.dart';
-import '../screens/m3u/m3u_player_screen.dart';
+import 'package:lumio/database/database.dart';
+import 'package:lumio/models/content_type.dart';
+import 'package:lumio/models/playlist_content_model.dart';
+import 'package:lumio/models/watch_history.dart';
+import 'package:lumio/services/app_state.dart';
+import 'package:lumio/services/watch_history_service.dart';
+import 'package:lumio/utils/navigate_by_content_type.dart';
+
 import '../services/service_locator.dart';
-import '../screens/series/episode_screen.dart';
+
 
 class WatchHistoryController extends ChangeNotifier {
   late WatchHistoryService _historyService;
@@ -50,7 +52,7 @@ class WatchHistoryController extends ChangeNotifier {
       _seriesHistory.isEmpty;
 
   Future<void> loadWatchHistory() async {
-    print('WatchHistoryController: loadWatchHistory başladı');
+    debugPrint('WatchHistoryController: loadWatchHistory başladı');
     _setLoading(true);
     _clearError();
 
@@ -62,15 +64,16 @@ class WatchHistoryController extends ChangeNotifier {
     _seriesHistory.clear();
     notifyListeners();
 
-    if (AppState.currentPlaylist == null) {
-      print('WatchHistoryController: Aktif playlist bulunamadı');
+    final playlist = AppState.currentPlaylist;
+    if (playlist == null) {
+      debugPrint('WatchHistoryController: Aktif playlist bulunamadı');
       _setError('Aktif playlist bulunamadı');
       _setLoading(false);
       return;
     }
 
-    final playlistId = AppState.currentPlaylist!.id;
-    print('WatchHistoryController: Playlist ID: $playlistId');
+    final playlistId = playlist.id;
+    debugPrint('WatchHistoryController: Playlist ID: $playlistId');
 
     try {
       final futures = await Future.wait([
@@ -100,6 +103,15 @@ class WatchHistoryController extends ChangeNotifier {
     } catch (e) {
       _setError('İzleme geçmişi yüklenirken hata oluştu: $e');
       _setLoading(false);
+    }
+  }
+
+  Future<void> syncWithCloud() async {
+    try {
+      await _historyService.syncFromCloud();
+      await loadWatchHistory();
+    } catch (e) {
+      _setError('Bulut senkronizasyonu sırasında hata oluştu: $e');
     }
   }
 
@@ -162,11 +174,16 @@ class WatchHistoryController extends ChangeNotifier {
     BuildContext context,
     WatchHistory history,
   ) async {
+    final currentPlaylist = AppState.currentPlaylist;
+    if (currentPlaylist == null) return;
+
     if (isXtreamCode) {
       final liveStream = await _database.findLiveStreamById(
         history.streamId,
-        AppState.currentPlaylist!.id,
+        currentPlaylist.id,
       );
+
+      if (!context.mounted) return;
 
       navigateByContentType(
         context,
@@ -180,9 +197,11 @@ class WatchHistoryController extends ChangeNotifier {
       );
     } else if (isM3u) {
       final liveStream = await _database.getM3uItemsByIdAndPlaylist(
-        AppState.currentPlaylist!.id,
+        currentPlaylist.id,
         history.streamId,
       );
+
+      if (!context.mounted) return;
 
       navigateByContentType(
         context,
@@ -191,18 +210,23 @@ class WatchHistoryController extends ChangeNotifier {
           history.title,
           history.imagePath ?? '',
           history.contentType,
-          m3uItem: liveStream!,
+          m3uItem: liveStream,
         ),
       );
     }
   }
 
   Future<void> _playMovie(BuildContext context, WatchHistory history) async {
+    final currentPlaylist = AppState.currentPlaylist;
+    if (currentPlaylist == null) return;
+
     if (isXtreamCode) {
       final movie = await _database.findMovieById(
         history.streamId,
-        AppState.currentPlaylist!.id,
+        currentPlaylist.id,
       );
+
+      if (!context.mounted) return;
 
       navigateByContentType(
         context,
@@ -217,9 +241,11 @@ class WatchHistoryController extends ChangeNotifier {
       );
     } else if (isM3u) {
       var movie = await _database.getM3uItemsByIdAndPlaylist(
-        AppState.currentPlaylist!.id,
+        currentPlaylist.id,
         history.streamId,
       );
+
+      if (!context.mounted) return;
 
       navigateByContentType(
         context,
@@ -235,15 +261,23 @@ class WatchHistoryController extends ChangeNotifier {
   }
 
   Future<void> _playSeries(BuildContext context, WatchHistory history) async {
+    final currentPlaylist = AppState.currentPlaylist;
+    if (currentPlaylist == null) return;
+
     if (isXtreamCode) {
       final episode = await _database.findEpisodesById(
         history.streamId,
-        AppState.currentPlaylist!.id,
+        currentPlaylist.id,
       );
 
-      final seriesResponse = await AppState.xtreamCodeRepository!.getSeriesInfo(
+      final repository = AppState.xtreamCodeRepository;
+      if (repository == null) return;
+
+      final seriesResponse = await repository.getSeriesInfo(
         episode!.seriesId,
       );
+
+      if (!context.mounted) return;
 
       Navigator.push(
         context,
@@ -266,9 +300,11 @@ class WatchHistoryController extends ChangeNotifier {
       );
     } else if (isM3u) {
       var m3uItem = await _database.getM3uItemsByIdAndPlaylist(
-        AppState.currentPlaylist!.id,
+        currentPlaylist.id,
         history.streamId,
       );
+
+      if (!context.mounted) return;
 
       Navigator.push(
         context,

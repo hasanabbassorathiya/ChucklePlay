@@ -67,6 +67,15 @@ class $PlaylistsTable extends Playlists
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _epgUrlMeta = const VerificationMeta('epgUrl');
+  @override
+  late final GeneratedColumn<String> epgUrl = GeneratedColumn<String>(
+    'epg_url',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
   );
@@ -86,6 +95,7 @@ class $PlaylistsTable extends Playlists
     url,
     username,
     password,
+    epgUrl,
     createdAt,
   ];
   @override
@@ -139,6 +149,12 @@ class $PlaylistsTable extends Playlists
         password.isAcceptableOrUnknown(data['password']!, _passwordMeta),
       );
     }
+    if (data.containsKey('epg_url')) {
+      context.handle(
+        _epgUrlMeta,
+        epgUrl.isAcceptableOrUnknown(data['epg_url']!, _epgUrlMeta),
+      );
+    }
     if (data.containsKey('created_at')) {
       context.handle(
         _createdAtMeta,
@@ -180,6 +196,10 @@ class $PlaylistsTable extends Playlists
         DriftSqlType.string,
         data['${effectivePrefix}password'],
       ),
+      epgUrl: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}epg_url'],
+      ),
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}created_at'],
@@ -200,6 +220,7 @@ class PlaylistData extends DataClass implements Insertable<PlaylistData> {
   final String? url;
   final String? username;
   final String? password;
+  final String? epgUrl;
   final DateTime createdAt;
   const PlaylistData({
     required this.id,
@@ -208,6 +229,7 @@ class PlaylistData extends DataClass implements Insertable<PlaylistData> {
     this.url,
     this.username,
     this.password,
+    this.epgUrl,
     required this.createdAt,
   });
   @override
@@ -225,6 +247,9 @@ class PlaylistData extends DataClass implements Insertable<PlaylistData> {
     if (!nullToAbsent || password != null) {
       map['password'] = Variable<String>(password);
     }
+    if (!nullToAbsent || epgUrl != null) {
+      map['epg_url'] = Variable<String>(epgUrl);
+    }
     map['created_at'] = Variable<DateTime>(createdAt);
     return map;
   }
@@ -241,6 +266,9 @@ class PlaylistData extends DataClass implements Insertable<PlaylistData> {
       password: password == null && nullToAbsent
           ? const Value.absent()
           : Value(password),
+      epgUrl: epgUrl == null && nullToAbsent
+          ? const Value.absent()
+          : Value(epgUrl),
       createdAt: Value(createdAt),
     );
   }
@@ -257,6 +285,7 @@ class PlaylistData extends DataClass implements Insertable<PlaylistData> {
       url: serializer.fromJson<String?>(json['url']),
       username: serializer.fromJson<String?>(json['username']),
       password: serializer.fromJson<String?>(json['password']),
+      epgUrl: serializer.fromJson<String?>(json['epgUrl']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
     );
   }
@@ -270,6 +299,7 @@ class PlaylistData extends DataClass implements Insertable<PlaylistData> {
       'url': serializer.toJson<String?>(url),
       'username': serializer.toJson<String?>(username),
       'password': serializer.toJson<String?>(password),
+      'epgUrl': serializer.toJson<String?>(epgUrl),
       'createdAt': serializer.toJson<DateTime>(createdAt),
     };
   }
@@ -281,6 +311,7 @@ class PlaylistData extends DataClass implements Insertable<PlaylistData> {
     Value<String?> url = const Value.absent(),
     Value<String?> username = const Value.absent(),
     Value<String?> password = const Value.absent(),
+    Value<String?> epgUrl = const Value.absent(),
     DateTime? createdAt,
   }) => PlaylistData(
     id: id ?? this.id,
@@ -289,6 +320,7 @@ class PlaylistData extends DataClass implements Insertable<PlaylistData> {
     url: url.present ? url.value : this.url,
     username: username.present ? username.value : this.username,
     password: password.present ? password.value : this.password,
+    epgUrl: epgUrl.present ? epgUrl.value : this.epgUrl,
     createdAt: createdAt ?? this.createdAt,
   );
   PlaylistData copyWithCompanion(PlaylistsCompanion data) {
@@ -299,6 +331,7 @@ class PlaylistData extends DataClass implements Insertable<PlaylistData> {
       url: data.url.present ? data.url.value : this.url,
       username: data.username.present ? data.username.value : this.username,
       password: data.password.present ? data.password.value : this.password,
+      epgUrl: data.epgUrl.present ? data.epgUrl.value : this.epgUrl,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
     );
   }
@@ -312,6 +345,7 @@ class PlaylistData extends DataClass implements Insertable<PlaylistData> {
           ..write('url: $url, ')
           ..write('username: $username, ')
           ..write('password: $password, ')
+          ..write('epgUrl: $epgUrl, ')
           ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
@@ -319,7 +353,7 @@ class PlaylistData extends DataClass implements Insertable<PlaylistData> {
 
   @override
   int get hashCode =>
-      Object.hash(id, name, type, url, username, password, createdAt);
+      Object.hash(id, name, type, url, username, password, epgUrl, createdAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -330,6 +364,7 @@ class PlaylistData extends DataClass implements Insertable<PlaylistData> {
           other.url == this.url &&
           other.username == this.username &&
           other.password == this.password &&
+          other.epgUrl == this.epgUrl &&
           other.createdAt == this.createdAt);
 }
 
@@ -340,6 +375,7 @@ class PlaylistsCompanion extends UpdateCompanion<PlaylistData> {
   final Value<String?> url;
   final Value<String?> username;
   final Value<String?> password;
+  final Value<String?> epgUrl;
   final Value<DateTime> createdAt;
   final Value<int> rowid;
   const PlaylistsCompanion({
@@ -349,6 +385,7 @@ class PlaylistsCompanion extends UpdateCompanion<PlaylistData> {
     this.url = const Value.absent(),
     this.username = const Value.absent(),
     this.password = const Value.absent(),
+    this.epgUrl = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.rowid = const Value.absent(),
   });
@@ -359,6 +396,7 @@ class PlaylistsCompanion extends UpdateCompanion<PlaylistData> {
     this.url = const Value.absent(),
     this.username = const Value.absent(),
     this.password = const Value.absent(),
+    this.epgUrl = const Value.absent(),
     required DateTime createdAt,
     this.rowid = const Value.absent(),
   }) : id = Value(id),
@@ -372,6 +410,7 @@ class PlaylistsCompanion extends UpdateCompanion<PlaylistData> {
     Expression<String>? url,
     Expression<String>? username,
     Expression<String>? password,
+    Expression<String>? epgUrl,
     Expression<DateTime>? createdAt,
     Expression<int>? rowid,
   }) {
@@ -382,6 +421,7 @@ class PlaylistsCompanion extends UpdateCompanion<PlaylistData> {
       if (url != null) 'url': url,
       if (username != null) 'username': username,
       if (password != null) 'password': password,
+      if (epgUrl != null) 'epg_url': epgUrl,
       if (createdAt != null) 'created_at': createdAt,
       if (rowid != null) 'rowid': rowid,
     });
@@ -394,6 +434,7 @@ class PlaylistsCompanion extends UpdateCompanion<PlaylistData> {
     Value<String?>? url,
     Value<String?>? username,
     Value<String?>? password,
+    Value<String?>? epgUrl,
     Value<DateTime>? createdAt,
     Value<int>? rowid,
   }) {
@@ -404,6 +445,7 @@ class PlaylistsCompanion extends UpdateCompanion<PlaylistData> {
       url: url ?? this.url,
       username: username ?? this.username,
       password: password ?? this.password,
+      epgUrl: epgUrl ?? this.epgUrl,
       createdAt: createdAt ?? this.createdAt,
       rowid: rowid ?? this.rowid,
     );
@@ -430,6 +472,9 @@ class PlaylistsCompanion extends UpdateCompanion<PlaylistData> {
     if (password.present) {
       map['password'] = Variable<String>(password.value);
     }
+    if (epgUrl.present) {
+      map['epg_url'] = Variable<String>(epgUrl.value);
+    }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
     }
@@ -448,6 +493,7 @@ class PlaylistsCompanion extends UpdateCompanion<PlaylistData> {
           ..write('url: $url, ')
           ..write('username: $username, ')
           ..write('password: $password, ')
+          ..write('epgUrl: $epgUrl, ')
           ..write('createdAt: $createdAt, ')
           ..write('rowid: $rowid')
           ..write(')'))
@@ -10275,6 +10321,777 @@ class FavoritesCompanion extends UpdateCompanion<FavoritesData> {
   }
 }
 
+class $EpgChannelsTable extends EpgChannels
+    with TableInfo<$EpgChannelsTable, EpgChannelsData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $EpgChannelsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _playlistIdMeta = const VerificationMeta(
+    'playlistId',
+  );
+  @override
+  late final GeneratedColumn<String> playlistId = GeneratedColumn<String>(
+    'playlist_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _displayNameMeta = const VerificationMeta(
+    'displayName',
+  );
+  @override
+  late final GeneratedColumn<String> displayName = GeneratedColumn<String>(
+    'display_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _iconMeta = const VerificationMeta('icon');
+  @override
+  late final GeneratedColumn<String> icon = GeneratedColumn<String>(
+    'icon',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, playlistId, displayName, icon];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'epg_channels';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<EpgChannelsData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('playlist_id')) {
+      context.handle(
+        _playlistIdMeta,
+        playlistId.isAcceptableOrUnknown(data['playlist_id']!, _playlistIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_playlistIdMeta);
+    }
+    if (data.containsKey('display_name')) {
+      context.handle(
+        _displayNameMeta,
+        displayName.isAcceptableOrUnknown(
+          data['display_name']!,
+          _displayNameMeta,
+        ),
+      );
+    }
+    if (data.containsKey('icon')) {
+      context.handle(
+        _iconMeta,
+        icon.isAcceptableOrUnknown(data['icon']!, _iconMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id, playlistId};
+  @override
+  EpgChannelsData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return EpgChannelsData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      playlistId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}playlist_id'],
+      )!,
+      displayName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}display_name'],
+      ),
+      icon: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}icon'],
+      ),
+    );
+  }
+
+  @override
+  $EpgChannelsTable createAlias(String alias) {
+    return $EpgChannelsTable(attachedDatabase, alias);
+  }
+}
+
+class EpgChannelsData extends DataClass implements Insertable<EpgChannelsData> {
+  final String id;
+  final String playlistId;
+  final String? displayName;
+  final String? icon;
+  const EpgChannelsData({
+    required this.id,
+    required this.playlistId,
+    this.displayName,
+    this.icon,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['playlist_id'] = Variable<String>(playlistId);
+    if (!nullToAbsent || displayName != null) {
+      map['display_name'] = Variable<String>(displayName);
+    }
+    if (!nullToAbsent || icon != null) {
+      map['icon'] = Variable<String>(icon);
+    }
+    return map;
+  }
+
+  EpgChannelsCompanion toCompanion(bool nullToAbsent) {
+    return EpgChannelsCompanion(
+      id: Value(id),
+      playlistId: Value(playlistId),
+      displayName: displayName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(displayName),
+      icon: icon == null && nullToAbsent ? const Value.absent() : Value(icon),
+    );
+  }
+
+  factory EpgChannelsData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return EpgChannelsData(
+      id: serializer.fromJson<String>(json['id']),
+      playlistId: serializer.fromJson<String>(json['playlistId']),
+      displayName: serializer.fromJson<String?>(json['displayName']),
+      icon: serializer.fromJson<String?>(json['icon']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'playlistId': serializer.toJson<String>(playlistId),
+      'displayName': serializer.toJson<String?>(displayName),
+      'icon': serializer.toJson<String?>(icon),
+    };
+  }
+
+  EpgChannelsData copyWith({
+    String? id,
+    String? playlistId,
+    Value<String?> displayName = const Value.absent(),
+    Value<String?> icon = const Value.absent(),
+  }) => EpgChannelsData(
+    id: id ?? this.id,
+    playlistId: playlistId ?? this.playlistId,
+    displayName: displayName.present ? displayName.value : this.displayName,
+    icon: icon.present ? icon.value : this.icon,
+  );
+  EpgChannelsData copyWithCompanion(EpgChannelsCompanion data) {
+    return EpgChannelsData(
+      id: data.id.present ? data.id.value : this.id,
+      playlistId: data.playlistId.present
+          ? data.playlistId.value
+          : this.playlistId,
+      displayName: data.displayName.present
+          ? data.displayName.value
+          : this.displayName,
+      icon: data.icon.present ? data.icon.value : this.icon,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('EpgChannelsData(')
+          ..write('id: $id, ')
+          ..write('playlistId: $playlistId, ')
+          ..write('displayName: $displayName, ')
+          ..write('icon: $icon')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, playlistId, displayName, icon);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is EpgChannelsData &&
+          other.id == this.id &&
+          other.playlistId == this.playlistId &&
+          other.displayName == this.displayName &&
+          other.icon == this.icon);
+}
+
+class EpgChannelsCompanion extends UpdateCompanion<EpgChannelsData> {
+  final Value<String> id;
+  final Value<String> playlistId;
+  final Value<String?> displayName;
+  final Value<String?> icon;
+  final Value<int> rowid;
+  const EpgChannelsCompanion({
+    this.id = const Value.absent(),
+    this.playlistId = const Value.absent(),
+    this.displayName = const Value.absent(),
+    this.icon = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  EpgChannelsCompanion.insert({
+    required String id,
+    required String playlistId,
+    this.displayName = const Value.absent(),
+    this.icon = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       playlistId = Value(playlistId);
+  static Insertable<EpgChannelsData> custom({
+    Expression<String>? id,
+    Expression<String>? playlistId,
+    Expression<String>? displayName,
+    Expression<String>? icon,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (playlistId != null) 'playlist_id': playlistId,
+      if (displayName != null) 'display_name': displayName,
+      if (icon != null) 'icon': icon,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  EpgChannelsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? playlistId,
+    Value<String?>? displayName,
+    Value<String?>? icon,
+    Value<int>? rowid,
+  }) {
+    return EpgChannelsCompanion(
+      id: id ?? this.id,
+      playlistId: playlistId ?? this.playlistId,
+      displayName: displayName ?? this.displayName,
+      icon: icon ?? this.icon,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (playlistId.present) {
+      map['playlist_id'] = Variable<String>(playlistId.value);
+    }
+    if (displayName.present) {
+      map['display_name'] = Variable<String>(displayName.value);
+    }
+    if (icon.present) {
+      map['icon'] = Variable<String>(icon.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('EpgChannelsCompanion(')
+          ..write('id: $id, ')
+          ..write('playlistId: $playlistId, ')
+          ..write('displayName: $displayName, ')
+          ..write('icon: $icon, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $EpgProgramsTable extends EpgPrograms
+    with TableInfo<$EpgProgramsTable, EpgProgramsData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $EpgProgramsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _channelIdMeta = const VerificationMeta(
+    'channelId',
+  );
+  @override
+  late final GeneratedColumn<String> channelId = GeneratedColumn<String>(
+    'channel_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _playlistIdMeta = const VerificationMeta(
+    'playlistId',
+  );
+  @override
+  late final GeneratedColumn<String> playlistId = GeneratedColumn<String>(
+    'playlist_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _startMeta = const VerificationMeta('start');
+  @override
+  late final GeneratedColumn<DateTime> start = GeneratedColumn<DateTime>(
+    'start',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _stopMeta = const VerificationMeta('stop');
+  @override
+  late final GeneratedColumn<DateTime> stop = GeneratedColumn<DateTime>(
+    'stop',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _titleMeta = const VerificationMeta('title');
+  @override
+  late final GeneratedColumn<String> title = GeneratedColumn<String>(
+    'title',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _descMeta = const VerificationMeta('desc');
+  @override
+  late final GeneratedColumn<String> desc = GeneratedColumn<String>(
+    'desc',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _categoryMeta = const VerificationMeta(
+    'category',
+  );
+  @override
+  late final GeneratedColumn<String> category = GeneratedColumn<String>(
+    'category',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    channelId,
+    playlistId,
+    start,
+    stop,
+    title,
+    desc,
+    category,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'epg_programs';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<EpgProgramsData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('channel_id')) {
+      context.handle(
+        _channelIdMeta,
+        channelId.isAcceptableOrUnknown(data['channel_id']!, _channelIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_channelIdMeta);
+    }
+    if (data.containsKey('playlist_id')) {
+      context.handle(
+        _playlistIdMeta,
+        playlistId.isAcceptableOrUnknown(data['playlist_id']!, _playlistIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_playlistIdMeta);
+    }
+    if (data.containsKey('start')) {
+      context.handle(
+        _startMeta,
+        start.isAcceptableOrUnknown(data['start']!, _startMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_startMeta);
+    }
+    if (data.containsKey('stop')) {
+      context.handle(
+        _stopMeta,
+        stop.isAcceptableOrUnknown(data['stop']!, _stopMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_stopMeta);
+    }
+    if (data.containsKey('title')) {
+      context.handle(
+        _titleMeta,
+        title.isAcceptableOrUnknown(data['title']!, _titleMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_titleMeta);
+    }
+    if (data.containsKey('desc')) {
+      context.handle(
+        _descMeta,
+        desc.isAcceptableOrUnknown(data['desc']!, _descMeta),
+      );
+    }
+    if (data.containsKey('category')) {
+      context.handle(
+        _categoryMeta,
+        category.isAcceptableOrUnknown(data['category']!, _categoryMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {channelId, playlistId, start};
+  @override
+  EpgProgramsData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return EpgProgramsData(
+      channelId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}channel_id'],
+      )!,
+      playlistId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}playlist_id'],
+      )!,
+      start: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}start'],
+      )!,
+      stop: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}stop'],
+      )!,
+      title: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}title'],
+      )!,
+      desc: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}desc'],
+      ),
+      category: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}category'],
+      ),
+    );
+  }
+
+  @override
+  $EpgProgramsTable createAlias(String alias) {
+    return $EpgProgramsTable(attachedDatabase, alias);
+  }
+}
+
+class EpgProgramsData extends DataClass implements Insertable<EpgProgramsData> {
+  final String channelId;
+  final String playlistId;
+  final DateTime start;
+  final DateTime stop;
+  final String title;
+  final String? desc;
+  final String? category;
+  const EpgProgramsData({
+    required this.channelId,
+    required this.playlistId,
+    required this.start,
+    required this.stop,
+    required this.title,
+    this.desc,
+    this.category,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['channel_id'] = Variable<String>(channelId);
+    map['playlist_id'] = Variable<String>(playlistId);
+    map['start'] = Variable<DateTime>(start);
+    map['stop'] = Variable<DateTime>(stop);
+    map['title'] = Variable<String>(title);
+    if (!nullToAbsent || desc != null) {
+      map['desc'] = Variable<String>(desc);
+    }
+    if (!nullToAbsent || category != null) {
+      map['category'] = Variable<String>(category);
+    }
+    return map;
+  }
+
+  EpgProgramsCompanion toCompanion(bool nullToAbsent) {
+    return EpgProgramsCompanion(
+      channelId: Value(channelId),
+      playlistId: Value(playlistId),
+      start: Value(start),
+      stop: Value(stop),
+      title: Value(title),
+      desc: desc == null && nullToAbsent ? const Value.absent() : Value(desc),
+      category: category == null && nullToAbsent
+          ? const Value.absent()
+          : Value(category),
+    );
+  }
+
+  factory EpgProgramsData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return EpgProgramsData(
+      channelId: serializer.fromJson<String>(json['channelId']),
+      playlistId: serializer.fromJson<String>(json['playlistId']),
+      start: serializer.fromJson<DateTime>(json['start']),
+      stop: serializer.fromJson<DateTime>(json['stop']),
+      title: serializer.fromJson<String>(json['title']),
+      desc: serializer.fromJson<String?>(json['desc']),
+      category: serializer.fromJson<String?>(json['category']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'channelId': serializer.toJson<String>(channelId),
+      'playlistId': serializer.toJson<String>(playlistId),
+      'start': serializer.toJson<DateTime>(start),
+      'stop': serializer.toJson<DateTime>(stop),
+      'title': serializer.toJson<String>(title),
+      'desc': serializer.toJson<String?>(desc),
+      'category': serializer.toJson<String?>(category),
+    };
+  }
+
+  EpgProgramsData copyWith({
+    String? channelId,
+    String? playlistId,
+    DateTime? start,
+    DateTime? stop,
+    String? title,
+    Value<String?> desc = const Value.absent(),
+    Value<String?> category = const Value.absent(),
+  }) => EpgProgramsData(
+    channelId: channelId ?? this.channelId,
+    playlistId: playlistId ?? this.playlistId,
+    start: start ?? this.start,
+    stop: stop ?? this.stop,
+    title: title ?? this.title,
+    desc: desc.present ? desc.value : this.desc,
+    category: category.present ? category.value : this.category,
+  );
+  EpgProgramsData copyWithCompanion(EpgProgramsCompanion data) {
+    return EpgProgramsData(
+      channelId: data.channelId.present ? data.channelId.value : this.channelId,
+      playlistId: data.playlistId.present
+          ? data.playlistId.value
+          : this.playlistId,
+      start: data.start.present ? data.start.value : this.start,
+      stop: data.stop.present ? data.stop.value : this.stop,
+      title: data.title.present ? data.title.value : this.title,
+      desc: data.desc.present ? data.desc.value : this.desc,
+      category: data.category.present ? data.category.value : this.category,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('EpgProgramsData(')
+          ..write('channelId: $channelId, ')
+          ..write('playlistId: $playlistId, ')
+          ..write('start: $start, ')
+          ..write('stop: $stop, ')
+          ..write('title: $title, ')
+          ..write('desc: $desc, ')
+          ..write('category: $category')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(channelId, playlistId, start, stop, title, desc, category);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is EpgProgramsData &&
+          other.channelId == this.channelId &&
+          other.playlistId == this.playlistId &&
+          other.start == this.start &&
+          other.stop == this.stop &&
+          other.title == this.title &&
+          other.desc == this.desc &&
+          other.category == this.category);
+}
+
+class EpgProgramsCompanion extends UpdateCompanion<EpgProgramsData> {
+  final Value<String> channelId;
+  final Value<String> playlistId;
+  final Value<DateTime> start;
+  final Value<DateTime> stop;
+  final Value<String> title;
+  final Value<String?> desc;
+  final Value<String?> category;
+  final Value<int> rowid;
+  const EpgProgramsCompanion({
+    this.channelId = const Value.absent(),
+    this.playlistId = const Value.absent(),
+    this.start = const Value.absent(),
+    this.stop = const Value.absent(),
+    this.title = const Value.absent(),
+    this.desc = const Value.absent(),
+    this.category = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  EpgProgramsCompanion.insert({
+    required String channelId,
+    required String playlistId,
+    required DateTime start,
+    required DateTime stop,
+    required String title,
+    this.desc = const Value.absent(),
+    this.category = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : channelId = Value(channelId),
+       playlistId = Value(playlistId),
+       start = Value(start),
+       stop = Value(stop),
+       title = Value(title);
+  static Insertable<EpgProgramsData> custom({
+    Expression<String>? channelId,
+    Expression<String>? playlistId,
+    Expression<DateTime>? start,
+    Expression<DateTime>? stop,
+    Expression<String>? title,
+    Expression<String>? desc,
+    Expression<String>? category,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (channelId != null) 'channel_id': channelId,
+      if (playlistId != null) 'playlist_id': playlistId,
+      if (start != null) 'start': start,
+      if (stop != null) 'stop': stop,
+      if (title != null) 'title': title,
+      if (desc != null) 'desc': desc,
+      if (category != null) 'category': category,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  EpgProgramsCompanion copyWith({
+    Value<String>? channelId,
+    Value<String>? playlistId,
+    Value<DateTime>? start,
+    Value<DateTime>? stop,
+    Value<String>? title,
+    Value<String?>? desc,
+    Value<String?>? category,
+    Value<int>? rowid,
+  }) {
+    return EpgProgramsCompanion(
+      channelId: channelId ?? this.channelId,
+      playlistId: playlistId ?? this.playlistId,
+      start: start ?? this.start,
+      stop: stop ?? this.stop,
+      title: title ?? this.title,
+      desc: desc ?? this.desc,
+      category: category ?? this.category,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (channelId.present) {
+      map['channel_id'] = Variable<String>(channelId.value);
+    }
+    if (playlistId.present) {
+      map['playlist_id'] = Variable<String>(playlistId.value);
+    }
+    if (start.present) {
+      map['start'] = Variable<DateTime>(start.value);
+    }
+    if (stop.present) {
+      map['stop'] = Variable<DateTime>(stop.value);
+    }
+    if (title.present) {
+      map['title'] = Variable<String>(title.value);
+    }
+    if (desc.present) {
+      map['desc'] = Variable<String>(desc.value);
+    }
+    if (category.present) {
+      map['category'] = Variable<String>(category.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('EpgProgramsCompanion(')
+          ..write('channelId: $channelId, ')
+          ..write('playlistId: $playlistId, ')
+          ..write('start: $start, ')
+          ..write('stop: $stop, ')
+          ..write('title: $title, ')
+          ..write('desc: $desc, ')
+          ..write('category: $category, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -10293,6 +11110,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $M3uSeriesTable m3uSeries = $M3uSeriesTable(this);
   late final $M3uEpisodesTable m3uEpisodes = $M3uEpisodesTable(this);
   late final $FavoritesTable favorites = $FavoritesTable(this);
+  late final $EpgChannelsTable epgChannels = $EpgChannelsTable(this);
+  late final $EpgProgramsTable epgPrograms = $EpgProgramsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -10313,6 +11132,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     m3uSeries,
     m3uEpisodes,
     favorites,
+    epgChannels,
+    epgPrograms,
   ];
 }
 
@@ -10324,6 +11145,7 @@ typedef $$PlaylistsTableCreateCompanionBuilder =
       Value<String?> url,
       Value<String?> username,
       Value<String?> password,
+      Value<String?> epgUrl,
       required DateTime createdAt,
       Value<int> rowid,
     });
@@ -10335,6 +11157,7 @@ typedef $$PlaylistsTableUpdateCompanionBuilder =
       Value<String?> url,
       Value<String?> username,
       Value<String?> password,
+      Value<String?> epgUrl,
       Value<DateTime> createdAt,
       Value<int> rowid,
     });
@@ -10375,6 +11198,11 @@ class $$PlaylistsTableFilterComposer
 
   ColumnFilters<String> get password => $composableBuilder(
     column: $table.password,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get epgUrl => $composableBuilder(
+    column: $table.epgUrl,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -10423,6 +11251,11 @@ class $$PlaylistsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get epgUrl => $composableBuilder(
+    column: $table.epgUrl,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get createdAt => $composableBuilder(
     column: $table.createdAt,
     builder: (column) => ColumnOrderings(column),
@@ -10455,6 +11288,9 @@ class $$PlaylistsTableAnnotationComposer
 
   GeneratedColumn<String> get password =>
       $composableBuilder(column: $table.password, builder: (column) => column);
+
+  GeneratedColumn<String> get epgUrl =>
+      $composableBuilder(column: $table.epgUrl, builder: (column) => column);
 
   GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
@@ -10497,6 +11333,7 @@ class $$PlaylistsTableTableManager
                 Value<String?> url = const Value.absent(),
                 Value<String?> username = const Value.absent(),
                 Value<String?> password = const Value.absent(),
+                Value<String?> epgUrl = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => PlaylistsCompanion(
@@ -10506,6 +11343,7 @@ class $$PlaylistsTableTableManager
                 url: url,
                 username: username,
                 password: password,
+                epgUrl: epgUrl,
                 createdAt: createdAt,
                 rowid: rowid,
               ),
@@ -10517,6 +11355,7 @@ class $$PlaylistsTableTableManager
                 Value<String?> url = const Value.absent(),
                 Value<String?> username = const Value.absent(),
                 Value<String?> password = const Value.absent(),
+                Value<String?> epgUrl = const Value.absent(),
                 required DateTime createdAt,
                 Value<int> rowid = const Value.absent(),
               }) => PlaylistsCompanion.insert(
@@ -10526,6 +11365,7 @@ class $$PlaylistsTableTableManager
                 url: url,
                 username: username,
                 password: password,
+                epgUrl: epgUrl,
                 createdAt: createdAt,
                 rowid: rowid,
               ),
@@ -15225,6 +16065,431 @@ typedef $$FavoritesTableProcessedTableManager =
       FavoritesData,
       PrefetchHooks Function()
     >;
+typedef $$EpgChannelsTableCreateCompanionBuilder =
+    EpgChannelsCompanion Function({
+      required String id,
+      required String playlistId,
+      Value<String?> displayName,
+      Value<String?> icon,
+      Value<int> rowid,
+    });
+typedef $$EpgChannelsTableUpdateCompanionBuilder =
+    EpgChannelsCompanion Function({
+      Value<String> id,
+      Value<String> playlistId,
+      Value<String?> displayName,
+      Value<String?> icon,
+      Value<int> rowid,
+    });
+
+class $$EpgChannelsTableFilterComposer
+    extends Composer<_$AppDatabase, $EpgChannelsTable> {
+  $$EpgChannelsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get playlistId => $composableBuilder(
+    column: $table.playlistId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get displayName => $composableBuilder(
+    column: $table.displayName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get icon => $composableBuilder(
+    column: $table.icon,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$EpgChannelsTableOrderingComposer
+    extends Composer<_$AppDatabase, $EpgChannelsTable> {
+  $$EpgChannelsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get playlistId => $composableBuilder(
+    column: $table.playlistId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get displayName => $composableBuilder(
+    column: $table.displayName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get icon => $composableBuilder(
+    column: $table.icon,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$EpgChannelsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $EpgChannelsTable> {
+  $$EpgChannelsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get playlistId => $composableBuilder(
+    column: $table.playlistId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get displayName => $composableBuilder(
+    column: $table.displayName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get icon =>
+      $composableBuilder(column: $table.icon, builder: (column) => column);
+}
+
+class $$EpgChannelsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $EpgChannelsTable,
+          EpgChannelsData,
+          $$EpgChannelsTableFilterComposer,
+          $$EpgChannelsTableOrderingComposer,
+          $$EpgChannelsTableAnnotationComposer,
+          $$EpgChannelsTableCreateCompanionBuilder,
+          $$EpgChannelsTableUpdateCompanionBuilder,
+          (
+            EpgChannelsData,
+            BaseReferences<_$AppDatabase, $EpgChannelsTable, EpgChannelsData>,
+          ),
+          EpgChannelsData,
+          PrefetchHooks Function()
+        > {
+  $$EpgChannelsTableTableManager(_$AppDatabase db, $EpgChannelsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$EpgChannelsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$EpgChannelsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$EpgChannelsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> playlistId = const Value.absent(),
+                Value<String?> displayName = const Value.absent(),
+                Value<String?> icon = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => EpgChannelsCompanion(
+                id: id,
+                playlistId: playlistId,
+                displayName: displayName,
+                icon: icon,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String playlistId,
+                Value<String?> displayName = const Value.absent(),
+                Value<String?> icon = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => EpgChannelsCompanion.insert(
+                id: id,
+                playlistId: playlistId,
+                displayName: displayName,
+                icon: icon,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$EpgChannelsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $EpgChannelsTable,
+      EpgChannelsData,
+      $$EpgChannelsTableFilterComposer,
+      $$EpgChannelsTableOrderingComposer,
+      $$EpgChannelsTableAnnotationComposer,
+      $$EpgChannelsTableCreateCompanionBuilder,
+      $$EpgChannelsTableUpdateCompanionBuilder,
+      (
+        EpgChannelsData,
+        BaseReferences<_$AppDatabase, $EpgChannelsTable, EpgChannelsData>,
+      ),
+      EpgChannelsData,
+      PrefetchHooks Function()
+    >;
+typedef $$EpgProgramsTableCreateCompanionBuilder =
+    EpgProgramsCompanion Function({
+      required String channelId,
+      required String playlistId,
+      required DateTime start,
+      required DateTime stop,
+      required String title,
+      Value<String?> desc,
+      Value<String?> category,
+      Value<int> rowid,
+    });
+typedef $$EpgProgramsTableUpdateCompanionBuilder =
+    EpgProgramsCompanion Function({
+      Value<String> channelId,
+      Value<String> playlistId,
+      Value<DateTime> start,
+      Value<DateTime> stop,
+      Value<String> title,
+      Value<String?> desc,
+      Value<String?> category,
+      Value<int> rowid,
+    });
+
+class $$EpgProgramsTableFilterComposer
+    extends Composer<_$AppDatabase, $EpgProgramsTable> {
+  $$EpgProgramsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get channelId => $composableBuilder(
+    column: $table.channelId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get playlistId => $composableBuilder(
+    column: $table.playlistId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get start => $composableBuilder(
+    column: $table.start,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get stop => $composableBuilder(
+    column: $table.stop,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get desc => $composableBuilder(
+    column: $table.desc,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get category => $composableBuilder(
+    column: $table.category,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$EpgProgramsTableOrderingComposer
+    extends Composer<_$AppDatabase, $EpgProgramsTable> {
+  $$EpgProgramsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get channelId => $composableBuilder(
+    column: $table.channelId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get playlistId => $composableBuilder(
+    column: $table.playlistId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get start => $composableBuilder(
+    column: $table.start,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get stop => $composableBuilder(
+    column: $table.stop,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get desc => $composableBuilder(
+    column: $table.desc,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get category => $composableBuilder(
+    column: $table.category,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$EpgProgramsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $EpgProgramsTable> {
+  $$EpgProgramsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get channelId =>
+      $composableBuilder(column: $table.channelId, builder: (column) => column);
+
+  GeneratedColumn<String> get playlistId => $composableBuilder(
+    column: $table.playlistId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get start =>
+      $composableBuilder(column: $table.start, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get stop =>
+      $composableBuilder(column: $table.stop, builder: (column) => column);
+
+  GeneratedColumn<String> get title =>
+      $composableBuilder(column: $table.title, builder: (column) => column);
+
+  GeneratedColumn<String> get desc =>
+      $composableBuilder(column: $table.desc, builder: (column) => column);
+
+  GeneratedColumn<String> get category =>
+      $composableBuilder(column: $table.category, builder: (column) => column);
+}
+
+class $$EpgProgramsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $EpgProgramsTable,
+          EpgProgramsData,
+          $$EpgProgramsTableFilterComposer,
+          $$EpgProgramsTableOrderingComposer,
+          $$EpgProgramsTableAnnotationComposer,
+          $$EpgProgramsTableCreateCompanionBuilder,
+          $$EpgProgramsTableUpdateCompanionBuilder,
+          (
+            EpgProgramsData,
+            BaseReferences<_$AppDatabase, $EpgProgramsTable, EpgProgramsData>,
+          ),
+          EpgProgramsData,
+          PrefetchHooks Function()
+        > {
+  $$EpgProgramsTableTableManager(_$AppDatabase db, $EpgProgramsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$EpgProgramsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$EpgProgramsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$EpgProgramsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> channelId = const Value.absent(),
+                Value<String> playlistId = const Value.absent(),
+                Value<DateTime> start = const Value.absent(),
+                Value<DateTime> stop = const Value.absent(),
+                Value<String> title = const Value.absent(),
+                Value<String?> desc = const Value.absent(),
+                Value<String?> category = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => EpgProgramsCompanion(
+                channelId: channelId,
+                playlistId: playlistId,
+                start: start,
+                stop: stop,
+                title: title,
+                desc: desc,
+                category: category,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String channelId,
+                required String playlistId,
+                required DateTime start,
+                required DateTime stop,
+                required String title,
+                Value<String?> desc = const Value.absent(),
+                Value<String?> category = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => EpgProgramsCompanion.insert(
+                channelId: channelId,
+                playlistId: playlistId,
+                start: start,
+                stop: stop,
+                title: title,
+                desc: desc,
+                category: category,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$EpgProgramsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $EpgProgramsTable,
+      EpgProgramsData,
+      $$EpgProgramsTableFilterComposer,
+      $$EpgProgramsTableOrderingComposer,
+      $$EpgProgramsTableAnnotationComposer,
+      $$EpgProgramsTableCreateCompanionBuilder,
+      $$EpgProgramsTableUpdateCompanionBuilder,
+      (
+        EpgProgramsData,
+        BaseReferences<_$AppDatabase, $EpgProgramsTable, EpgProgramsData>,
+      ),
+      EpgProgramsData,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -15259,4 +16524,8 @@ class $AppDatabaseManager {
       $$M3uEpisodesTableTableManager(_db, _db.m3uEpisodes);
   $$FavoritesTableTableManager get favorites =>
       $$FavoritesTableTableManager(_db, _db.favorites);
+  $$EpgChannelsTableTableManager get epgChannels =>
+      $$EpgChannelsTableTableManager(_db, _db.epgChannels);
+  $$EpgProgramsTableTableManager get epgPrograms =>
+      $$EpgProgramsTableTableManager(_db, _db.epgPrograms);
 }

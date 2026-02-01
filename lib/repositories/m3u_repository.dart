@@ -1,9 +1,9 @@
-import 'package:another_iptv_player/database/database.dart';
-import 'package:another_iptv_player/models/category.dart';
-import 'package:another_iptv_player/models/content_type.dart';
-import 'package:another_iptv_player/models/live_stream.dart';
-import 'package:another_iptv_player/models/m3u_series.dart';
-import 'package:another_iptv_player/services/app_state.dart';
+import 'package:lumio/database/database.dart';
+import 'package:lumio/models/category.dart';
+import 'package:lumio/models/content_type.dart';
+import 'package:lumio/models/live_stream.dart';
+import 'package:lumio/models/m3u_series.dart';
+import 'package:lumio/services/app_state.dart';
 
 import '../models/m3u_item.dart';
 import '../models/series.dart';
@@ -11,10 +11,18 @@ import '../models/vod_streams.dart';
 import '../services/service_locator.dart';
 
 class M3uRepository {
-  final String _playlistId = AppState.currentPlaylist!.id;
+  final String? _manualPlaylistId;
   final _database = getIt<AppDatabase>();
 
-  M3uRepository();
+  M3uRepository({String? playlistId}) : _manualPlaylistId = playlistId;
+
+  String get _playlistId {
+    final id = _manualPlaylistId ?? AppState.currentPlaylist?.id;
+    if (id == null) {
+      throw StateError('M3uRepository: No playlist ID available. AppState.currentPlaylist is null.');
+    }
+    return id;
+  }
 
   Future<List<Category>?> getCategories() async {
     return await _database.getCategoriesByPlaylist(_playlistId);

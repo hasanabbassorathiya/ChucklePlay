@@ -1,73 +1,53 @@
-import 'package:another_iptv_player/screens/m3u/m3u_home_screen.dart';
+import 'package:lumio/services/epg_service.dart';
 import 'package:flutter/material.dart';
-import 'package:another_iptv_player/repositories/user_preferences.dart';
-import 'package:another_iptv_player/services/app_state.dart';
-import '../models/playlist_model.dart';
-import '../screens/xtream-codes/xtream_code_home_screen.dart';
-import '../services/playlist_service.dart';
+import 'package:lumio/repositories/user_preferences.dart';
+import 'package:lumio/services/app_state.dart';
+import 'package:lumio/models/playlist_model.dart';
+import 'package:lumio/services/playlist_service.dart';
+import 'package:collection/collection.dart';
 
 class PlaylistController extends ChangeNotifier {
   List<Playlist> _playlists = [];
+  Playlist? _currentPlaylist;
   bool _isLoading = false;
   String? _error;
-  bool _hasInitialized = false;
+  final bool _hasInitialized = false;
 
   List<Playlist> get playlists => List.unmodifiable(_playlists);
-
+  Playlist? get currentPlaylist => _currentPlaylist;
   bool get isLoading => _isLoading;
-
   String? get error => _error;
-
   bool get hasInitialized => _hasInitialized;
-
-  int get playlistCount => _playlists.length;
-
-  int get xtreamCount =>
-      _playlists.where((p) => p.type == PlaylistType.xtream).length;
-
-  int get m3uCount =>
-      _playlists.where((p) => p.type == PlaylistType.m3u).length;
-
-  List<Playlist> get xtreamPlaylists => getPlaylistsByType(PlaylistType.xtream);
-
-  List<Playlist> get m3uPlaylists => getPlaylistsByType(PlaylistType.m3u);
 
   Future<void> loadPlaylists(BuildContext context) async {
     _setLoading(true);
-    _clearError();
+    clearError();
 
     try {
       _playlists = await PlaylistService.getPlaylists();
+
+      // Try to restore last playlist
+      final lastId = await UserPreferences.getLastPlaylist();
+      if (lastId != null) {
+        _currentPlaylist = _playlists.firstWhereOrNull((p) => p.id == lastId);
+        if (_currentPlaylist != null) {
+          AppState.currentPlaylist = _currentPlaylist;
+        }
+      }
+
       _sortPlaylists();
     } catch (e) {
-      setError('Playlistler yüklenemedi: ${e.toString()}');
+      setError('Failed to load playlists: ${e.toString()}');
     } finally {
       _setLoading(false);
     }
   }
 
-  Future<void> openPlaylist(BuildContext context, Playlist playlist) async {
-    await UserPreferences.setLastPlaylist(playlist.id);
+  void selectPlaylist(Playlist playlist) {
+    _currentPlaylist = playlist;
     AppState.currentPlaylist = playlist;
-
-    if (context.mounted) {
-      switch (playlist.type) {
-        case PlaylistType.xtream:
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => XtreamCodeHomeScreen(playlist: playlist),
-            ),
-          );
-        case PlaylistType.m3u:
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => M3UHomeScreen(playlist: playlist),
-            ),
-          );
-      }
-    }
+    UserPreferences.setLastPlaylist(playlist.id);
+    notifyListeners();
   }
 
   Future<Playlist?> createPlaylist({
@@ -76,13 +56,14 @@ class PlaylistController extends ChangeNotifier {
     String? url,
     String? username,
     String? password,
+    String? epgUrl,
   }) async {
     if (!_validateInput(name, type, url, username, password)) {
       return null;
     }
 
     _setLoading(true);
-    _clearError();
+    clearError();
 
     try {
       final playlist = Playlist(
@@ -92,6 +73,7 @@ class PlaylistController extends ChangeNotifier {
         url: url?.trim(),
         username: username?.trim(),
         password: password?.trim(),
+        epgUrl: epgUrl?.trim(),
         createdAt: DateTime.now(),
       );
 
@@ -99,12 +81,26 @@ class PlaylistController extends ChangeNotifier {
       _playlists.add(playlist);
       _sortPlaylists();
 
+      // Trigger EPG update if URL is provided
+      if (epgUrl != null && epgUrl.isNotEmpty) {
+        refreshEpg(playlist.id, epgUrl);
+      }
+
       return playlist;
     } catch (e) {
-      setError('Playlist kaydedilemedi: ${e.toString()}');
+      setError('Failed to save playlist: ${e.toString()}');
       return null;
     } finally {
       _setLoading(false);
+    }
+  }
+
+  Future<void> refreshEpg(String playlistId, String epgUrl) async {
+    try {
+      await EpgService.updateEpg(playlistId, epgUrl);
+      notifyListeners();
+    } catch (e) {
+      debugPrint('EPG update failed: $e');
     }
   }
 
@@ -112,40 +108,26 @@ class PlaylistController extends ChangeNotifier {
     try {
       await PlaylistService.deletePlaylist(id);
       _playlists.removeWhere((playlist) => playlist.id == id);
-      notifyListeners();
-      return true;
-    } catch (e) {
-      setError('Playlist silinemedi: ${e.toString()}');
-      return false;
-    }
-  }
-
-  Future<bool> deleteMultiplePlaylists(List<String> ids) async {
-    _setLoading(true);
-    _clearError();
-
-    try {
-      for (final id in ids) {
-        await PlaylistService.deletePlaylist(id);
-        _playlists.removeWhere((playlist) => playlist.id == id);
+      if (_currentPlaylist?.id == id) {
+        _currentPlaylist = null;
+        AppState.currentPlaylist = null;
+        UserPreferences.removeLastPlaylist();
       }
       notifyListeners();
       return true;
     } catch (e) {
-      setError('Playlistler silinemedi: ${e.toString()}');
+      setError('Failed to delete playlist: ${e.toString()}');
       return false;
-    } finally {
-      _setLoading(false);
     }
   }
 
   Future<bool> updatePlaylist(Playlist updatedPlaylist) async {
     _setLoading(true);
-    _clearError();
+    clearError();
 
     try {
       if (_isDuplicateName(updatedPlaylist)) {
-        setError('Bu isimde bir playlist zaten mevcut');
+        setError('A playlist with this name already exists');
         return false;
       }
 
@@ -154,91 +136,20 @@ class PlaylistController extends ChangeNotifier {
       final index = _playlists.indexWhere((p) => p.id == updatedPlaylist.id);
       if (index != -1) {
         _playlists[index] = updatedPlaylist;
+        if (_currentPlaylist?.id == updatedPlaylist.id) {
+          _currentPlaylist = updatedPlaylist;
+          AppState.currentPlaylist = updatedPlaylist;
+        }
         _sortPlaylists();
       }
 
       return true;
     } catch (e) {
-      setError('Playlist güncellenemedi: ${e.toString()}');
+      setError('Failed to update playlist: ${e.toString()}');
       return false;
     } finally {
       _setLoading(false);
     }
-  }
-
-  Playlist? getPlaylistById(String id) {
-    try {
-      return _playlists.firstWhere((playlist) => playlist.id == id);
-    } catch (e) {
-      return null;
-    }
-  }
-
-  List<Playlist> getPlaylistsByType(PlaylistType type) {
-    return _playlists.where((playlist) => playlist.type == type).toList();
-  }
-
-  List<Playlist> searchPlaylists(String query) {
-    if (query.trim().isEmpty) return _playlists;
-
-    final lowercaseQuery = query.toLowerCase();
-    return _playlists.where((playlist) {
-      return playlist.name.toLowerCase().contains(lowercaseQuery) ||
-          (playlist.url?.toLowerCase().contains(lowercaseQuery) ?? false) ||
-          (playlist.username?.toLowerCase().contains(lowercaseQuery) ?? false);
-    }).toList();
-  }
-
-  Map<String, int> getPlaylistStats() {
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-    final thisWeek = now.subtract(const Duration(days: 7));
-    final thisMonth = DateTime(now.year, now.month, 1);
-
-    return {
-      'total': _playlists.length,
-      'xstream': xtreamCount,
-      'm3u': m3uCount,
-      'createdToday': _playlists.where((p) {
-        final playlistDate = DateTime(
-          p.createdAt.year,
-          p.createdAt.month,
-          p.createdAt.day,
-        );
-        return playlistDate.isAtSameMomentAs(today);
-      }).length,
-      'createdThisWeek': _playlists
-          .where((p) => p.createdAt.isAfter(thisWeek))
-          .length,
-      'createdThisMonth': _playlists
-          .where((p) => p.createdAt.isAfter(thisMonth))
-          .length,
-    };
-  }
-
-  Future<String> exportPlaylistsAsJson() async {
-    try {
-      final playlistData = _playlists.map((p) => p.toJson()).toList();
-      return playlistData.toString();
-    } catch (e) {
-      throw Exception('Export işlemi başarısız: ${e.toString()}');
-    }
-  }
-
-  bool validatePlaylistData({
-    required String name,
-    required PlaylistType type,
-    String? url,
-    String? username,
-    String? password,
-  }) {
-    return _validateInput(name, type, url, username, password);
-  }
-
-  void clearError() => _clearError();
-
-  Future<void> refreshPlaylists(BuildContext context) async {
-    await loadPlaylists(context);
   }
 
   bool _validateInput(
@@ -249,32 +160,32 @@ class PlaylistController extends ChangeNotifier {
     String? password,
   ) {
     if (name.trim().isEmpty || name.trim().length < 2) {
-      setError('Playlist adı en az 2 karakter olmalıdır');
+      setError('Playlist name must be at least 2 characters');
       return false;
     }
 
     if (_playlists.any((p) => p.name.toLowerCase() == name.toLowerCase())) {
-      setError('Bu isimde bir playlist zaten mevcut');
+      setError('A playlist with this name already exists');
       return false;
     }
 
     if (type == PlaylistType.xtream) {
       if (url?.trim().isEmpty ?? true) {
-        setError('URL gereklidir');
+        setError('URL is required');
         return false;
       }
       if (username?.trim().isEmpty ?? true) {
-        setError('Kullanıcı adı gereklidir');
+        setError('Username is required');
         return false;
       }
       if (password?.trim().isEmpty ?? true) {
-        setError('Şifre gereklidir');
+        setError('Password is required');
         return false;
       }
 
       final uri = Uri.tryParse(url!.trim());
       if (uri == null || !uri.hasScheme || !uri.hasAuthority) {
-        setError('Geçerli bir URL giriniz');
+        setError('Please enter a valid URL');
         return false;
       }
     }
@@ -307,7 +218,7 @@ class PlaylistController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _clearError() {
+  void clearError() {
     if (_error != null) {
       _error = null;
       notifyListeners();
@@ -316,11 +227,5 @@ class PlaylistController extends ChangeNotifier {
 
   String _generateUniqueId() {
     return '${DateTime.now().millisecondsSinceEpoch}_${_playlists.length}';
-  }
-
-  @override
-  void dispose() {
-    _playlists.clear();
-    super.dispose();
   }
 }

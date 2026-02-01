@@ -9,19 +9,22 @@ class AppLocalizationsAr extends AppLocalizations {
   AppLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
-  String get slogan => 'مشغل IPTV مفتوح المصدر';
+  String get slogan => 'عالمك من البث.';
+
+  @override
+  String get home => 'الرئيسية';
 
   @override
   String get search => 'بحث';
 
   @override
-  String get search_live_stream => 'البحث في البث المباشر';
+  String get search_live_stream => 'بحث في البث المباشر';
 
   @override
-  String get search_movie => 'البحث في الأفلام';
+  String get search_movie => 'بحث في الأفلام';
 
   @override
-  String get search_series => 'البحث في المسلسلات';
+  String get search_series => 'بحث في المسلسلات';
 
   @override
   String get not_found_in_category => 'لم يتم العثور على محتوى في هذه الفئة';
@@ -70,7 +73,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get clear_all_confirmation_message =>
-      'هل أنت متأكد من رغبتك في حذف كل السجل؟';
+      'هل أنت متأكد من أنك تريد حذف كل السجل؟';
 
   @override
   String get try_again => 'حاول مرة أخرى';
@@ -85,7 +88,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get live => 'مباشر';
 
   @override
-  String get live_streams => 'البث المباشر';
+  String get live_streams => 'بث مباشر';
 
   @override
   String get on_live => 'مباشر';
@@ -118,16 +121,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get series_id => 'معرف المسلسل';
 
   @override
-  String get quality => 'الجودة';
+  String get quality => 'جودة';
 
   @override
   String get stream_type => 'نوع البث';
 
   @override
-  String get format => 'التنسيق';
+  String get format => 'تنسيق';
 
   @override
-  String get season => 'المواسم';
+  String get season => 'مواسم';
 
   @override
   String episode_count(Object count) {
@@ -152,7 +155,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get genre => 'النوع';
 
   @override
-  String get cast => 'فريق التمثيل';
+  String get cast => 'الممثلون';
 
   @override
   String get director => 'المخرج';
@@ -173,17 +176,17 @@ class AppLocalizationsAr extends AppLocalizations {
   String get settings => 'الإعدادات';
 
   @override
-  String get general_settings => 'الإعدادات العامة';
+  String get general_settings => 'إعدادات عامة';
 
   @override
   String get app_language => 'لغة التطبيق';
 
   @override
-  String get continue_on_background => 'متابعة التشغيل في الخلفية';
+  String get continue_on_background => 'الاستمرار في الخلفية';
 
   @override
   String get continue_on_background_description =>
-      'متابعة التشغيل حتى عندما يكون التطبيق في الخلفية';
+      'استمر في اللعب حتى عندما يكون التطبيق في الخلفية';
 
   @override
   String get refresh_contents => 'تحديث المحتوى';
@@ -213,10 +216,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get word_spacing => 'تباعد الكلمات';
 
   @override
-  String get padding => 'الحشو';
+  String get padding => 'حشوة';
 
   @override
-  String get color_settings => 'إعدادات الألوان';
+  String get color_settings => 'إعدادات اللون';
 
   @override
   String get text_color => 'لون النص';
@@ -228,7 +231,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get style_settings => 'إعدادات النمط';
 
   @override
-  String get font_weight => 'سُمك الخط';
+  String get font_weight => 'سمك الخط';
 
   @override
   String get thin => 'رفيع';
@@ -270,7 +273,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get create_new_playlist => 'إنشاء قائمة تشغيل جديدة';
 
   @override
-  String get loading_playlists => 'جارٍ تحميل قوائم التشغيل...';
+  String get loading_playlists => 'جاري تحميل قوائم التشغيل...';
 
   @override
   String get playlist_list => 'قائمة التشغيل';
@@ -282,13 +285,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get playlist_name => 'اسم قائمة التشغيل';
 
   @override
-  String get playlist_name_placeholder => 'أدخل اسماً لقائمة التشغيل';
+  String get playlist_name_placeholder => 'اسم لقائمة التشغيل الخاصة بك';
 
   @override
   String get playlist_name_required => 'اسم قائمة التشغيل مطلوب';
 
   @override
-  String get playlist_name_min_2 => 'يجب أن يحتوي الاسم على حرفين على الأقل';
+  String get playlist_name_min_2 => 'يجب أن يتكون الاسم من حرفين على الأقل';
 
   @override
   String playlist_deleted(Object name) {
@@ -300,7 +303,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String playlist_delete_confirmation_message(Object name) {
-    return 'هل أنت متأكد من رغبتك في حذف قائمة التشغيل \'$name\'؟\nلا يمكن التراجع عن هذا الإجراء.';
+    return 'هل أنت متأكد أنك تريد حذف قائمة التشغيل \'$name\'؟\nلا يمكن التراجع عن هذا الإجراء.';
   }
 
   @override
@@ -308,13 +311,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get empty_playlist_message =>
-      'ابدأ بإنشاء قائمة التشغيل الأولى.\nيمكنك إضافة قوائم تشغيل بتنسيق Xtream Code أو M3U.';
+      'ابدأ بإنشاء قائمة التشغيل الأولى الخاصة بك.\nيمكنك إضافة قوائم تشغيل بتنسيق Xtream Code أو M3U.';
 
   @override
   String get empty_playlist_button => 'إنشاء قائمة التشغيل الأولى';
 
   @override
   String get favorites => 'المفضلة';
+
+  @override
+  String get no_favorites_found => 'لم يتم العثور على مفضلة';
 
   @override
   String get see_all_favorites => 'عرض الكل';
@@ -337,21 +343,21 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get xtream_code_title =>
-      'الاتصال باستخدام API URL واسم المستخدم وكلمة المرور';
+      'الاتصال باستخدام عنوان API واسم المستخدم وكلمة المرور';
 
   @override
   String get xtream_code_description =>
-      'اتصل بسهولة باستخدام معلومات مزود IPTV الخاص بك';
+      'اتصل بسهولة بالمعلومات من مزود IPTV الخاص بك';
 
   @override
   String get select_playlist_type_footer =>
-      'يتم تخزين معلومات قائمة التشغيل بأمان على جهازك.';
+      'يتم تخزين معلومات قائمة التشغيل الخاصة بك بأمان على جهازك.';
 
   @override
-  String get api_url => 'رابط API';
+  String get api_url => 'عنوان API';
 
   @override
-  String get api_url_required => 'رابط API مطلوب';
+  String get api_url_required => 'عنوان API مطلوب';
 
   @override
   String get username => 'اسم المستخدم';
@@ -363,7 +369,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get username_required => 'اسم المستخدم مطلوب';
 
   @override
-  String get username_min_3 => 'يجب أن يحتوي اسم المستخدم على 3 أحرف على الأقل';
+  String get username_min_3 => 'يجب أن يتكون اسم المستخدم من 3 أحرف على الأقل';
 
   @override
   String get password => 'كلمة المرور';
@@ -375,13 +381,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get password_required => 'كلمة المرور مطلوبة';
 
   @override
-  String get password_min_3 => 'يجب أن تحتوي كلمة المرور على 3 أحرف على الأقل';
+  String get password_min_3 => 'يجب أن تتكون كلمة المرور من 3 أحرف على الأقل';
 
   @override
-  String get server_url => 'رابط الخادم';
+  String get server_url => 'عنوان الخادم';
 
   @override
-  String get submitting => 'جارٍ الحفظ...';
+  String get submitting => 'جاري الحفظ...';
 
   @override
   String get submit_create_playlist => 'حفظ قائمة التشغيل';
@@ -399,7 +405,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String remaining_day(Object days) {
-    return '$days يوم';
+    return '$days أيام';
   }
 
   @override
@@ -409,13 +415,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get no_connection => 'لا يوجد اتصال';
 
   @override
-  String get expired => 'منتهي الصلاحية';
+  String get expired => 'منتهية الصلاحية';
 
   @override
   String get active_connection => 'اتصال نشط';
 
   @override
-  String get maximum_connection => 'الحد الأقصى للاتصال';
+  String get maximum_connection => 'أقصى اتصال';
 
   @override
   String get server_information => 'معلومات الخادم';
@@ -432,11 +438,11 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get url_format_validate_message =>
-      'يجب أن يكون تنسيق الرابط مثل http://server:port';
+      'يجب أن يكون تنسيق URL مثل http://server:port';
 
   @override
   String get url_format_validate_error =>
-      'يرجى إدخال رابط صحيح (يجب أن يبدأ بـ http:// أو https://)';
+      'يرجى إدخال عنوان URL صالح (يجب أن يبدأ بـ http:// أو https://)';
 
   @override
   String get playlist_name_already_exists =>
@@ -444,16 +450,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get invalid_credentials =>
-      'تعذر الحصول على استجابة من مزود IPTV، يرجى التحقق من معلوماتك';
+      'لا يمكن الحصول على استجابة من مزود IPTV الخاص بك، يرجى التحقق من معلوماتك';
 
   @override
   String get error_occurred => 'حدث خطأ';
 
   @override
-  String get connecting => 'جارٍ الاتصال';
+  String get connecting => 'جاري الاتصال';
 
   @override
-  String get preparing_categories => 'جارٍ تحضير الفئات';
+  String get preparing_categories => 'جاري تحضير الفئات';
 
   @override
   String preparing_categories_exception(Object error) {
@@ -461,7 +467,7 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get preparing_live_streams => 'جارٍ تحميل القنوات المباشرة';
+  String get preparing_live_streams => 'جاري تحميل القنوات المباشرة';
 
   @override
   String get preparing_live_streams_exception_1 =>
@@ -473,7 +479,7 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get preparing_movies => 'جارٍ فتح مكتبة الأفلام';
+  String get preparing_movies => 'جاري فتح مكتبة الأفلام';
 
   @override
   String get preparing_movies_exception_1 => 'تعذر الحصول على الأفلام';
@@ -484,7 +490,7 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get preparing_series => 'جارٍ تحضير مكتبة المسلسلات';
+  String get preparing_series => 'جاري تحضير مكتبة المسلسلات';
 
   @override
   String get preparing_series_exception_1 => 'تعذر الحصول على المسلسلات';
@@ -504,7 +510,7 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get m3u_playlist_title => 'إضافة قائمة تشغيل بملف M3U أو رابط';
+  String get m3u_playlist_title => 'إضافة قائمة تشغيل بملف M3U أو عنوان URL';
 
   @override
   String get m3u_playlist_description => 'يدعم ملفات تنسيق M3U التقليدية';
@@ -514,72 +520,72 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get m3u_playlist_load_description =>
-      'تحميل قنوات IPTV بملف قائمة تشغيل M3U أو رابط';
+      'تحميل قنوات IPTV بملف قائمة تشغيل M3U أو عنوان URL';
 
   @override
   String get playlist_name_hint => 'أدخل اسم قائمة التشغيل';
 
   @override
   String get playlist_name_min_length =>
-      'يجب أن يكون اسم قائمة التشغيل على الأقل حرفين';
+      'يجب أن يتكون اسم قائمة التشغيل من حرفين على الأقل';
 
   @override
   String get source_type => 'نوع المصدر';
 
   @override
-  String get url => 'رابط';
+  String get url => 'عنوان URL';
 
   @override
   String get file => 'ملف';
 
   @override
-  String get m3u_url => 'رابط M3U';
+  String get m3u_url => 'عنوان M3U URL';
 
   @override
   String get m3u_url_hint => 'http://example.com/playlist.m3u';
 
   @override
-  String get m3u_url_required => 'رابط M3U مطلوب';
+  String get m3u_url_required => 'عنوان M3U URL مطلوب';
 
   @override
-  String get url_format_error => 'أدخل تنسيق رابط صحيح';
+  String get url_format_error => 'أدخل تنسيق URL صالح';
 
   @override
-  String get url_scheme_error => 'يجب أن يبدأ الرابط بـ http:// أو https://';
+  String get url_scheme_error => 'يجب أن يبدأ عنوان URL بـ http:// أو https://';
 
   @override
   String get m3u_file => 'ملف M3U';
 
   @override
-  String get file_selected => 'تم اختيار الملف';
+  String get file_selected => 'تم تحديد الملف';
 
   @override
-  String get select_m3u_file => 'اختر ملف M3U (.m3u, .m3u8)';
+  String get select_m3u_file => 'حدد ملف M3U (.m3u, .m3u8)';
 
   @override
-  String get please_select_m3u_file => 'يرجى اختيار ملف M3U';
+  String get please_select_m3u_file => 'يرجى تحديد ملف M3U';
 
   @override
-  String get file_selection_error => 'حدث خطأ أثناء اختيار الملف';
+  String get file_selection_error => 'حدث خطأ أثناء تحديد الملف';
 
   @override
-  String get processing => 'جارٍ المعالجة...';
+  String get processing => 'جاري المعالجة...';
 
   @override
-  String get create_playlist => 'إنشاء قائمة التشغيل';
+  String get create_playlist => 'إنشاء قائمة تشغيل';
 
   @override
   String get error_occurred_title => 'حدث خطأ';
 
   @override
   String get m3u_info_message =>
-      'جميع البيانات محفوظة بأمان على جهازك.\nالتنسيقات المدعومة: .m3u, .m3u8\nتنسيق الرابط: يجب أن يبدأ بـ http:// أو https://';
+      'يتم تخزين جميع البيانات بأمان على جهازك.\nالتنسيقات المدعومة: .m3u, .m3u8\nتنسيق URL: يجب أن يبدأ بـ http:// أو https://';
 
   @override
   String get m3u_parse_error => 'خطأ في تحليل M3U';
 
   @override
-  String get loading_m3u => 'تحميل M3U';
+  String get loading_m3u => 'جاري تحميل M3U';
 
   @override
   String get preparing_m3u_exception_no_source => 'لم يتم العثور على مصدر M3U';
@@ -596,7 +602,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get not_categorized => 'غير مصنف';
 
   @override
-  String get loading_lists => 'تحميل القوائم...';
+  String get loading_lists => 'جاري تحميل القوائم...';
 
   @override
   String get all => 'الكل';
@@ -625,7 +631,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get m3u_error => 'خطأ M3U';
 
   @override
-  String get episode_short => 'حلقة';
+  String get episode_short => 'ح';
 
   @override
   String season_number(Object number) {
@@ -633,22 +639,22 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get image_loading => 'تحميل الصورة...';
+  String get image_loading => 'جاري تحميل الصورة...';
 
   @override
-  String get image_not_found => 'الصورة غير موجودة';
+  String get image_not_found => 'لم يتم العثور على الصورة';
 
   @override
-  String get select_all => 'حدد الكل';
+  String get select_all => 'تحديد الكل';
 
   @override
   String get deselect_all => 'إلغاء تحديد الكل';
 
   @override
-  String get hide_category => 'إخفاء الفئة';
+  String get hide_category => 'إخفاء الفئات';
 
   @override
-  String get rating => 'تصنيف';
+  String get rating => 'التقييم';
 
   @override
   String get remove_from_history => 'إزالة من السجل';
@@ -665,7 +671,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get clear_old_records_confirmation =>
-      'هل أنت متأكد من أنك تريد حذف سجلات المشاهدة الأقدم من 30 يومًا؟';
+      'هل أنت متأكد من أنك تريد حذف سجلات المشاهدة الأقدم من 30 يوماً؟';
 
   @override
   String get clear_old => 'مسح القديم';
@@ -681,10 +687,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get appearance => 'المظهر';
 
   @override
-  String get theme => 'سمة';
+  String get theme => 'السمة';
 
   @override
-  String get standard => 'قياسي';
+  String get standard => 'افتراضي';
 
   @override
   String get light => 'فاتح';
@@ -693,7 +699,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get dark => 'داكن';
 
   @override
-  String get trailer => 'الإعلان';
+  String get trailer => 'إعلان';
 
   @override
   String get new_ep => 'جديد';
@@ -702,11 +708,11 @@ class AppLocalizationsAr extends AppLocalizations {
   String get continue_watching => 'متابعة المشاهدة';
 
   @override
-  String get start_watching => 'ابدأ المشاهدة';
+  String get start_watching => 'بدء المشاهدة';
 
   @override
   String continue_watching_label(String season, String episode) {
-    return 'متابعة: الموسم $season الحلقة $episode';
+    return 'متابعة: م$season ح$episode';
   }
 
   @override
@@ -717,34 +723,34 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get brightness_gesture_description =>
-      'التحكم في السطوع عن طريق السحب عموديًا على الجانب الأيسر';
+      'التحكم في السطوع عن طريق التمرير عمودياً على الجانب الأيسر';
 
   @override
   String get volume_gesture => 'إيماءة الصوت';
 
   @override
   String get volume_gesture_description =>
-      'التحكم في الصوت عن طريق السحب عموديًا على الجانب الأيمن';
+      'التحكم في مستوى الصوت عن طريق التمرير عمودياً على الجانب الأيمن';
 
   @override
   String get seek_gesture => 'إيماءة البحث';
 
   @override
-  String get seek_gesture_description => 'البحث عن طريق السحب أفقيًا';
+  String get seek_gesture_description => 'البحث عن طريق التمرير أفقياً';
 
   @override
   String get speed_up_on_long_press => 'تسريع عند الضغط الطويل';
 
   @override
   String get speed_up_on_long_press_description =>
-      'تسريع التشغيل عند الضغط الطويل';
+      'تسريع التشغيل عند الضغط لفترة طويلة';
 
   @override
-  String get seek_on_double_tap => 'البحث عند النقر المزدوج';
+  String get seek_on_double_tap => 'بحث عند النقر المزدوج';
 
   @override
   String get seek_on_double_tap_description =>
-      'البحث للأمام/للخلف بالنقر المزدوج';
+      'البحث للأمام/للخلف عن طريق النقر المزدوج';
 
   @override
   String get copied_to_clipboard => 'تم النسخ إلى الحافظة';
@@ -759,19 +765,19 @@ class AppLocalizationsAr extends AppLocalizations {
   String get support_on_github => 'دعم على GitHub';
 
   @override
-  String get support_on_github_description => 'ساهم في المشروع على GitHub';
+  String get support_on_github_description => 'المساهمة في المشروع على GitHub';
 
   @override
-  String get select_channel => 'اختر القناة';
+  String get select_channel => 'اختر قناة';
 
   @override
   String get episodes => 'حلقات';
 
   @override
-  String get categories => 'الفئات';
+  String get categories => 'فئات';
 
   @override
-  String get seasons => 'المواسم';
+  String get seasons => 'مواسم';
 
   @override
   String season_number_format(int number) {

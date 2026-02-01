@@ -1,14 +1,15 @@
 import 'dart:convert' show utf8;
-import 'dart:io' show File, HttpClient;
-import 'package:another_iptv_player/database/database.dart'
+import 'dart:io' show File;
+import 'package:http/http.dart' as http;
+import 'package:lumio/database/database.dart'
     hide M3uEpisodes, M3uSeries;
-import 'package:another_iptv_player/models/category.dart';
-import 'package:another_iptv_player/models/category_type.dart';
-import 'package:another_iptv_player/models/content_type.dart';
-import 'package:another_iptv_player/models/m3u_item.dart';
-import 'package:another_iptv_player/models/progress_step.dart';
-import 'package:another_iptv_player/services/m3u_parser.dart';
-import 'package:another_iptv_player/services/service_locator.dart';
+import 'package:lumio/models/category.dart';
+import 'package:lumio/models/category_type.dart';
+import 'package:lumio/models/content_type.dart';
+import 'package:lumio/models/m3u_item.dart';
+import 'package:lumio/models/progress_step.dart';
+import 'package:lumio/services/m3u_parser.dart';
+import 'package:lumio/services/service_locator.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart' hide Category;
 import 'package:uuid/uuid.dart';
@@ -40,6 +41,7 @@ class M3uController extends ChangeNotifier {
   String? _errorMessage;
   String? _errorKey;
   ProgressStep _currentStep = ProgressStep.userInfo;
+  bool _disposed = false;
 
   // Getters
   List<M3uItem>? get allChannels => _allChannels;
@@ -64,17 +66,20 @@ class M3uController extends ChangeNotifier {
   ProgressStep get currentStep => _currentStep;
 
   void _setLoading(bool loading) {
+    if (_disposed) return;
     _isLoading = loading;
     notifyListeners();
   }
 
   void _setError(String? error, [String? errorKey]) {
+    if (_disposed) return;
     _errorMessage = error;
     _errorKey = errorKey;
     notifyListeners();
   }
 
   void _setCurrentStep(ProgressStep step) {
+    if (_disposed) return;
     _currentStep = step;
     notifyListeners();
   }
@@ -133,7 +138,9 @@ class M3uController extends ChangeNotifier {
 
       await appDatabase.insertCategories(_categories!);
 
-      notifyListeners();
+      if (!_disposed) {
+        notifyListeners();
+      }
       return true;
     } catch (e) {
       _setError(
@@ -324,9 +331,7 @@ class M3uController extends ChangeNotifier {
 
   Future<List<M3uItem>> _parseUrl(String playlistId, String url) async {
     try {
-      final client = HttpClient();
-      final request = await client.getUrl(Uri.parse(url));
-      final response = await request.close();
+      final response = await http.get(Uri.parse(url));
 
       if (response.statusCode != 200) {
         throw Exception(
@@ -334,8 +339,7 @@ class M3uController extends ChangeNotifier {
         );
       }
 
-      final content = await response.transform(utf8.decoder).join();
-      client.close();
+      final content = utf8.decode(response.bodyBytes);
       return _parseM3u(playlistId, content);
     } catch (e) {
       print('M3U URL parse error: $e');
@@ -487,7 +491,26 @@ class M3uController extends ChangeNotifier {
     _errorMessage = null;
     _errorKey = null;
     _currentStep = ProgressStep.userInfo;
-    notifyListeners();
+    if (!_disposed) {
+      notifyListeners();
+    }
+  }
+
+  @override
+  void addListener(VoidCallback listener) {
+    if (_disposed) {
+      // Silently ignore attempts to add listeners after disposal
+      // This prevents errors during hot reload when the widget tree
+      // tries to reassemble with a disposed controller
+      return;
+    }
+    super.addListener(listener);
+  }
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
   }
 
   String? findCategoryId(String? groupTitle, CategoryType categoryType) {

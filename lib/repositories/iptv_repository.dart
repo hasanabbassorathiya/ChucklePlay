@@ -1,18 +1,18 @@
 import 'dart:convert';
 import 'package:drift/drift.dart' as drift;
 import 'package:http/http.dart' as http;
-import 'package:another_iptv_player/database/database.dart';
-import 'package:another_iptv_player/models/api_configuration_model.dart';
-import 'package:another_iptv_player/models/api_response.dart';
-import 'package:another_iptv_player/models/category.dart';
-import 'package:another_iptv_player/models/live_stream.dart';
-import 'package:another_iptv_player/models/series_response.dart';
-import 'package:another_iptv_player/models/vod_streams.dart';
-import 'package:another_iptv_player/models/series.dart';
-import 'package:another_iptv_player/utils/type_convertions.dart';
+import 'package:lumio/database/database.dart';
+import 'package:lumio/models/api_configuration_model.dart';
+import 'package:lumio/models/api_response.dart';
+import 'package:lumio/models/category.dart';
+import 'package:lumio/models/live_stream.dart';
+import 'package:lumio/models/series_response.dart';
+import 'package:lumio/models/vod_streams.dart';
+import 'package:lumio/models/series.dart';
+import 'package:lumio/utils/type_convertions.dart';
 import '../models/category_type.dart';
 import '../services/service_locator.dart';
-import 'package:another_iptv_player/services/event_bus.dart';
+import 'package:lumio/services/event_bus.dart';
 
 class IptvRepository {
   final ApiConfig _config;
@@ -129,6 +129,7 @@ class IptvRepository {
       print('Live Channels Error: $e');
       return null;
     }
+    return null;
   }
 
   Future<List<LiveStream>?> getLiveChannelsByCategoryId({
@@ -150,6 +151,7 @@ class IptvRepository {
       print('Live Channels Error: $e');
       return null;
     }
+    return null;
   }
 
   Future<LiveStream?> findLiveStreamById(String streamId) async {
@@ -231,6 +233,7 @@ class IptvRepository {
       print('Movies Error: $e');
       return null;
     }
+    return null;
   }
 
   Future<List<SeriesStream>?> getSeriesFromApi({
@@ -299,6 +302,7 @@ class IptvRepository {
        print('Series Error: $e');
        return null;
      }
+     return null;
    }
 
    /// Fetch VOD movie info from API

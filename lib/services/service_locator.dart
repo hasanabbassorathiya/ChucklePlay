@@ -1,8 +1,10 @@
-import 'package:another_iptv_player/l10n/app_localizations.dart';
+import 'package:lumio/l10n/app_localizations.dart';
+import 'package:lumio/services/auth_service.dart';
+import 'package:lumio/services/firestore_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:another_iptv_player/database/database.dart';
-import 'package:another_iptv_player/utils/audio_handler.dart';
+import 'package:lumio/database/database.dart';
+import 'package:lumio/utils/audio_handler.dart';
 import 'package:media_kit/media_kit.dart';
 
 GetIt getIt = GetIt.instance;
@@ -12,6 +14,8 @@ Future<void> setupServiceLocator() async {
 
   getIt.registerSingleton<MyAudioHandler>(await initAudioService());
   getIt.registerSingleton<AppDatabase>(AppDatabase());
+  getIt.registerLazySingleton<AuthService>(() => AuthService());
+  getIt.registerLazySingleton<FirestoreService>(() => FirestoreService());
 
   MediaKit.ensureInitialized();
 }

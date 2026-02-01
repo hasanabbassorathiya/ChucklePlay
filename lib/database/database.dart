@@ -1,14 +1,14 @@
 import 'dart:io';
 import 'package:drift/drift.dart';
 import 'package:flutter/foundation.dart' hide Category;
-import 'package:another_iptv_player/database/drift_flutter.dart';
-import 'package:another_iptv_player/models/category.dart';
-import 'package:another_iptv_player/models/content_type.dart';
-import 'package:another_iptv_player/models/live_stream.dart';
-import 'package:another_iptv_player/models/series.dart';
-import 'package:another_iptv_player/models/vod_streams.dart';
-import 'package:another_iptv_player/models/server_info.dart';
-import 'package:another_iptv_player/models/user_info.dart';
+import 'package:lumio/database/drift_flutter.dart';
+import 'package:lumio/models/category.dart';
+import 'package:lumio/models/content_type.dart';
+import 'package:lumio/models/live_stream.dart';
+import 'package:lumio/models/series.dart';
+import 'package:lumio/models/vod_streams.dart';
+import 'package:lumio/models/server_info.dart';
+import 'package:lumio/models/user_info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import '../models/category_type.dart';
@@ -16,6 +16,8 @@ import '../models/m3u_item.dart';
 import '../models/m3u_series.dart';
 import '../models/playlist_model.dart';
 import '../models/favorite.dart';
+import '../models/epg_channel.dart';
+import '../models/epg_program.dart';
 
 part 'database.g.dart';
 
@@ -32,6 +34,8 @@ class Playlists extends Table {
   TextColumn get username => text().nullable()();
 
   TextColumn get password => text().nullable()();
+
+  TextColumn get epgUrl => text().nullable()();
 
   DateTimeColumn get createdAt => dateTime()();
 
@@ -445,6 +449,31 @@ class Favorites extends Table {
   Set<Column> get primaryKey => {id};
 }
 
+@DataClassName('EpgChannelsData')
+class EpgChannels extends Table {
+  TextColumn get id => text()(); // The channel ID in the XMLTV file
+  TextColumn get playlistId => text()();
+  TextColumn get displayName => text().nullable()();
+  TextColumn get icon => text().nullable()();
+
+  @override
+  Set<Column> get primaryKey => {id, playlistId};
+}
+
+@DataClassName('EpgProgramsData')
+class EpgPrograms extends Table {
+  TextColumn get channelId => text()(); // References EpgChannels.id
+  TextColumn get playlistId => text()();
+  DateTimeColumn get start => dateTime()();
+  DateTimeColumn get stop => dateTime()();
+  TextColumn get title => text()();
+  TextColumn get desc => text().nullable()();
+  TextColumn get category => text().nullable()();
+
+  @override
+  Set<Column> get primaryKey => {channelId, playlistId, start};
+}
+
 @DriftDatabase(
   tables: [
     Playlists,
@@ -462,6 +491,8 @@ class Favorites extends Table {
     M3uSeries,
     M3uEpisodes,
     Favorites,
+    EpgChannels,
+    EpgPrograms,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -469,7 +500,7 @@ class AppDatabase extends _$AppDatabase {
     : super(
         e ??
             driftDatabase(
-              name: 'another-iptv-player',
+              name: 'lumio-player',
               native: const DriftNativeOptions(
                 databaseDirectory: getApplicationSupportDirectory,
               ),
@@ -489,7 +520,76 @@ class AppDatabase extends _$AppDatabase {
       );
 
   @override
-  int get schemaVersion => 8;
+  int get schemaVersion => 10;
+
+  // === EPG OPERATIONS ===
+
+  Future<void> insertEpgChannels(List<EpgChannel> channels) async {
+    await batch((batch) {
+      batch.insertAllOnConflictUpdate(
+        epgChannels,
+        channels.map((e) => e.toCompanion()).toList(),
+      );
+    });
+  }
+
+  Future<void> insertEpgPrograms(List<EpgProgram> programs) async {
+    await batch((batch) {
+      batch.insertAllOnConflictUpdate(
+        epgPrograms,
+        programs.map((e) => e.toCompanion()).toList(),
+      );
+    });
+  }
+
+  Future<List<EpgProgram>> getEpgProgramsForChannel(
+    String channelId,
+    String playlistId, {
+    DateTime? startTime,
+    DateTime? endTime,
+  }) async {
+    var query = select(epgPrograms)
+      ..where(
+        (t) => t.channelId.equals(channelId) & t.playlistId.equals(playlistId),
+      );
+
+    if (startTime != null) {
+      query.where((t) => t.stop.isBiggerThanValue(startTime));
+    }
+    if (endTime != null) {
+      query.where((t) => t.start.isSmallerThanValue(endTime));
+    }
+
+    query.orderBy([(t) => OrderingTerm.asc(t.start)]);
+
+    final rows = await query.get();
+    return rows.map((row) => EpgProgram.fromDrift(row)).toList();
+  }
+
+  Future<EpgProgram?> getCurrentProgram(
+    String channelId,
+    String playlistId,
+  ) async {
+    final now = DateTime.now();
+    final query = select(epgPrograms)
+      ..where(
+        (t) =>
+            t.channelId.equals(channelId) &
+            t.playlistId.equals(playlistId) &
+            t.start.isSmallerOrEqualValue(now) &
+            t.stop.isBiggerThanValue(now),
+      );
+
+    final row = await query.getSingleOrNull();
+    return row != null ? EpgProgram.fromDrift(row) : null;
+  }
+
+  Future<void> deleteEpgData(String playlistId) async {
+    await (delete(epgPrograms)..where((t) => t.playlistId.equals(playlistId)))
+        .go();
+    await (delete(epgChannels)..where((t) => t.playlistId.equals(playlistId)))
+        .go();
+  }
 
   // === PLAYLIST İŞLEMLERİ ===
 
@@ -503,6 +603,7 @@ class AppDatabase extends _$AppDatabase {
         url: Value(playlist.url),
         username: Value(playlist.username),
         password: Value(playlist.password),
+        epgUrl: Value(playlist.epgUrl),
         createdAt: Value(playlist.createdAt),
       ),
     );
@@ -538,6 +639,7 @@ class AppDatabase extends _$AppDatabase {
         url: Value(playlist.url),
         username: Value(playlist.username),
         password: Value(playlist.password),
+        epgUrl: Value(playlist.epgUrl),
       ),
     );
   }
@@ -751,6 +853,7 @@ class AppDatabase extends _$AppDatabase {
       url: data.url,
       username: data.username,
       password: data.password,
+      epgUrl: data.epgUrl,
       createdAt: data.createdAt,
     );
   }
@@ -1649,6 +1752,9 @@ class AppDatabase extends _$AppDatabase {
       if (from <= 8) {
         await m.addColumn(vodStreams, vodStreams.genre);
         await m.addColumn(vodStreams, vodStreams.youtubeTrailer);
+      }
+      if (from <= 9) {
+        await m.addColumn(playlists, playlists.epgUrl);
       }
     },
   );

@@ -1,9 +1,9 @@
-import 'package:another_iptv_player/models/category_view_model.dart';
-import 'package:another_iptv_player/models/content_type.dart';
-import 'package:another_iptv_player/models/playlist_content_model.dart';
-import 'package:another_iptv_player/models/playlist_model.dart';
-import 'package:another_iptv_player/repositories/m3u_repository.dart';
-import 'package:another_iptv_player/services/app_state.dart';
+import 'package:lumio/models/category_view_model.dart';
+import 'package:lumio/models/content_type.dart';
+import 'package:lumio/models/playlist_content_model.dart';
+import 'package:lumio/models/playlist_model.dart';
+import 'package:lumio/repositories/m3u_repository.dart';
+import 'package:lumio/services/app_state.dart';
 import '../models/category_type.dart';
 
 class ContentService {
@@ -11,8 +11,11 @@ class ContentService {
     CategoryViewModel category,
   ) async {
     final categoryId = category.category.categoryId;
+    final playlist = AppState.currentPlaylist;
+    if (playlist == null) return [];
+
     try {
-      switch (AppState.currentPlaylist!.type) {
+      switch (playlist.type) {
         case PlaylistType.xtream:
           return await _fetchXtreamContent(category.category.type, categoryId);
         case PlaylistType.m3u:
@@ -27,7 +30,9 @@ class ContentService {
     CategoryType type,
     String categoryId,
   ) async {
-    final repository = AppState.xtreamCodeRepository!;
+    final repository = AppState.xtreamCodeRepository;
+    if (repository == null) return [];
+
     switch (type) {
       case CategoryType.live:
         return await _fetchGenericContent(

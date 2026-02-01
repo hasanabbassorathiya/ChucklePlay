@@ -1,17 +1,17 @@
-import 'package:another_iptv_player/l10n/localization_extension.dart';
-import 'package:another_iptv_player/models/category_type.dart';
-import 'package:another_iptv_player/models/category_view_model.dart';
-import 'package:another_iptv_player/models/content_type.dart';
-import 'package:another_iptv_player/models/m3u_item.dart';
-import 'package:another_iptv_player/models/playlist_content_model.dart';
-import 'package:another_iptv_player/models/view_state.dart';
-import 'package:another_iptv_player/repositories/m3u_repository.dart';
-import 'package:another_iptv_player/services/app_state.dart';
+import 'package:lumio/l10n/localization_extension.dart';
+import 'package:lumio/models/category_type.dart';
+import 'package:lumio/models/category_view_model.dart';
+import 'package:lumio/models/content_type.dart';
+import 'package:lumio/models/m3u_item.dart';
+import 'package:lumio/models/playlist_content_model.dart';
+import 'package:lumio/models/view_state.dart';
+import 'package:lumio/repositories/m3u_repository.dart';
+import 'package:lumio/services/app_state.dart';
 import 'package:flutter/material.dart';
 
 class M3UHomeController extends ChangeNotifier {
   late PageController _pageController;
-  final M3uRepository _repository = AppState.m3uRepository!;
+  final M3uRepository _repository;
   String? _errorMessage;
   ViewState _viewState = ViewState.idle;
 
@@ -47,10 +47,16 @@ class M3UHomeController extends ChangeNotifier {
 
   bool get isLoading => _isLoading;
 
-  M3UHomeController() {
+  M3UHomeController({M3uRepository? repository})
+      : _repository = repository ?? AppState.m3uRepository ?? M3uRepository() {
+    AppState.m3uRepository ??= _repository;
     _pageController = PageController();
-    _loadM3uItems();
-    _loadCategories();
+  }
+
+  Future<void> init() async {
+    if (!_isLoading && _m3uItems != null && _m3uItems!.isNotEmpty) return;
+    await _loadM3uItems();
+    await _loadCategories();
   }
 
   @override
@@ -86,13 +92,15 @@ class M3UHomeController extends ChangeNotifier {
       case 2:
         return context.loc.live_streams;
       case 3:
-        return context.loc.movies;
+        return 'EPG'; // TODO: Add to localization
       case 4:
-        return context.loc.series_plural;
+        return context.loc.movies;
       case 5:
+        return context.loc.series_plural;
+      case 6:
         return context.loc.settings;
       default:
-        return 'Another IPTV Player';
+        return 'Lumio';
     }
   }
 
@@ -158,10 +166,13 @@ class M3UHomeController extends ChangeNotifier {
           switch (category.type) {
             case CategoryType.live:
               _liveCategories.add(categoryViewModel);
+              break;
             case CategoryType.vod:
               _vodCategories.add(categoryViewModel);
+              break;
             case CategoryType.series:
               _seriesCategories.add(categoryViewModel);
+              break;
           }
         } else {
           var series = await _repository.getSeriesByCategoryId(

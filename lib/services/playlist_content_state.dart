@@ -1,7 +1,7 @@
-import 'package:another_iptv_player/models/category.dart';
-import 'package:another_iptv_player/models/category_type.dart';
-import 'package:another_iptv_player/models/playlist_content_model.dart';
-import 'package:another_iptv_player/services/app_state.dart';
+import 'package:lumio/models/category.dart';
+import 'package:lumio/models/category_type.dart';
+import 'package:lumio/models/playlist_content_model.dart';
+import 'package:lumio/services/app_state.dart';
 import '../models/content_type.dart';
 
 class PlaylistContentState {
@@ -31,23 +31,25 @@ class PlaylistContentState {
     liveCategories.clear();
 
     try {
-      final repository = AppState.xtreamCodeRepository ?? AppState.m3uRepository;
-      if (repository == null) return;
+      final xtreamRepo = AppState.xtreamCodeRepository;
+      final m3uRepo = AppState.m3uRepository;
+
+      if (xtreamRepo == null && m3uRepo == null) return;
 
       // Kategorileri yükle
-      if (AppState.xtreamCodeRepository != null) {
-        liveCategories = await AppState.xtreamCodeRepository!.getLiveCategories() ?? [];
-      } else if (AppState.m3uRepository != null) {
-        final categories = await AppState.m3uRepository!.getCategories();
+      if (xtreamRepo != null) {
+        liveCategories = await xtreamRepo.getLiveCategories() ?? [];
+      } else if (m3uRepo != null) {
+        final categories = await m3uRepo.getCategories();
         liveCategories = categories?.where((c) => c.type == CategoryType.live).toList() ?? [];
       }
 
       // Her kategori için kanalları yükle
       for (var category in liveCategories) {
         List<ContentItem> items = [];
-        
-        if (AppState.xtreamCodeRepository != null) {
-          final streams = await AppState.xtreamCodeRepository!.getLiveChannelsByCategoryId(
+
+        if (xtreamRepo != null) {
+          final streams = await xtreamRepo.getLiveChannelsByCategoryId(
             categoryId: category.categoryId,
           );
           items = streams?.map((x) => ContentItem(
@@ -57,8 +59,8 @@ class PlaylistContentState {
             ContentType.liveStream,
             liveStream: x,
           )).toList() ?? [];
-        } else if (AppState.m3uRepository != null) {
-          final m3uItems = await AppState.m3uRepository!.getM3uItemsByCategoryId(
+        } else if (m3uRepo != null) {
+          final m3uItems = await m3uRepo.getM3uItemsByCategoryId(
             categoryId: category.categoryId,
             contentType: ContentType.liveStream,
           );
@@ -86,12 +88,13 @@ class PlaylistContentState {
     movieCategories.clear();
 
     try {
-      if (AppState.xtreamCodeRepository == null) return;
+      final xtreamRepo = AppState.xtreamCodeRepository;
+      if (xtreamRepo == null) return;
 
-      movieCategories = await AppState.xtreamCodeRepository!.getVodCategories() ?? [];
+      movieCategories = await xtreamRepo.getVodCategories() ?? [];
 
       for (var category in movieCategories) {
-        final movies = await AppState.xtreamCodeRepository!.getMovies(
+        final movies = await xtreamRepo.getMovies(
           categoryId: category.categoryId,
         );
         final items = movies?.map((x) => ContentItem(
@@ -118,12 +121,13 @@ class PlaylistContentState {
     seriesCategories.clear();
 
     try {
-      if (AppState.xtreamCodeRepository == null) return;
+      final xtreamRepo = AppState.xtreamCodeRepository;
+      if (xtreamRepo == null) return;
 
-      seriesCategories = await AppState.xtreamCodeRepository!.getSeriesCategories() ?? [];
+      seriesCategories = await xtreamRepo.getSeriesCategories() ?? [];
 
       for (var category in seriesCategories) {
-        final series = await AppState.xtreamCodeRepository!.getSeries(
+        final series = await xtreamRepo.getSeries(
           categoryId: category.categoryId,
         );
         final items = series?.map((x) => ContentItem(

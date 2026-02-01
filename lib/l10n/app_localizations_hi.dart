@@ -12,6 +12,9 @@ class AppLocalizationsHi extends AppLocalizations {
   String get slogan => 'ओपन सोर्स IPTV प्लेयर';
 
   @override
+  String get home => 'Home';
+
+  @override
   String get search => 'खोजें';
 
   @override
@@ -316,6 +319,9 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get favorites => 'पसंदीदा';
+
+  @override
+  String get no_favorites_found => 'No favorites found';
 
   @override
   String get see_all_favorites => 'सभी देखें';

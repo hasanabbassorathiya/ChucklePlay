@@ -1,6 +1,6 @@
 # Support & Information
 
-**Another IPTV Player** is a completely free and open-source IPTV player. Our goal is to provide all the premium features of paid IPTV players, but without any cost or restrictions—powered by the strength and transparency of open source.
+**Lumio Player** is a completely free and open-source IPTV player. Our goal is to provide all the premium features of paid IPTV players, but without any cost or restrictions—powered by the strength and transparency of open source.
 
 ## Please Note
 
@@ -17,7 +17,7 @@
 2. Enter these credentials in the app to access your channels and content.
 3. Enjoy a feature-rich, open-source IPTV experience!
 
-## Why Choose Another IPTV Player?
+## Why Choose Lumio Player?
 
 - 100% free, forever.
 - Completely open source—transparency you can trust.
@@ -26,7 +26,7 @@
 
 ## Need Help?
 
-If you have questions, feedback, or need support, please visit our [GitHub repository](https://github.com/bsogulcan/another-iptv-player) or contact us at [bsogulcan@gmail.com].
+If you have questions, feedback, or need support, please visit our [GitHub repository](https://github.com/lumio/lumio-player) or contact us at [support@lumio-player.com].
 
-**Disclaimer:**  
-Another IPTV Player does not provide any IPTV content or subscriptions. You must use your own legal IPTV service. We do not endorse or promote any specific IPTV providers.
+**Disclaimer:**
+Lumio Player does not provide any IPTV content or subscriptions. You must use your own legal IPTV service. We do not endorse or promote any specific IPTV providers.

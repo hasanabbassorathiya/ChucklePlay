@@ -1,8 +1,8 @@
-# Contributing to Another IPTV Player
+# Contributing to Lumio Player
 
 Thank you for considering contributing!
 
-For development and testing with the Xtream Codes API, you can use the following mock server repository: [xtream-codes-mock-server](https://github.com/bsogulcan/xtream-codes-mock-server)
+For development and testing with the Xtream Codes API, you can use the following mock server repository: [xtream-codes-mock-server](https://github.com/lumio/xtream-codes-mock-server)
 
 ## How to Contribute
 
@@ -19,6 +19,6 @@ For development and testing with the Xtream Codes API, you can use the following
 
 ## Issues & Feature Requests
 
-- Use [GitHub Issues](https://github.com/bsogulcan/another-iptv-player/issues) for bugs or feature suggestions.
+- Use [GitHub Issues](https://github.com/lumio/lumio-player/issues) for bugs or feature suggestions.
 
-For any questions, contact [bsogulcan@gmail.com](mailto:bsogulcan@gmail.com).
+For any questions, contact [support@lumio-player.com](mailto:support@lumio-player.com).

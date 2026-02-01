@@ -1,12 +1,13 @@
-import 'package:another_iptv_player/database/database.dart';
-import 'package:another_iptv_player/models/content_type.dart';
-import 'package:another_iptv_player/models/favorite.dart';
-import 'package:another_iptv_player/models/playlist_content_model.dart';
-import 'package:another_iptv_player/services/app_state.dart';
-import 'package:another_iptv_player/services/service_locator.dart';
-import 'package:another_iptv_player/utils/get_playlist_type.dart';
-import 'package:another_iptv_player/repositories/m3u_repository.dart';
+import 'package:lumio/database/database.dart';
+import 'package:lumio/models/content_type.dart';
+import 'package:lumio/models/favorite.dart';
+import 'package:lumio/models/playlist_content_model.dart';
+import 'package:lumio/services/app_state.dart';
+import 'package:lumio/services/service_locator.dart';
+import 'package:lumio/utils/get_playlist_type.dart';
+import 'package:lumio/repositories/m3u_repository.dart';
 import 'package:uuid/uuid.dart';
+import 'package:collection/collection.dart';
 
 class FavoritesRepository {
   final _database = getIt<AppDatabase>();
@@ -15,7 +16,9 @@ class FavoritesRepository {
   FavoritesRepository();
 
   Future<void> addFavorite(ContentItem contentItem) async {
-    final playlistId = AppState.currentPlaylist!.id;
+    final playlist = AppState.currentPlaylist;
+    if (playlist == null) return;
+    final playlistId = playlist.id;
 
     final isAlreadyFavorite = await _database.isFavorite(
       playlistId,
@@ -43,12 +46,18 @@ class FavoritesRepository {
     await _database.insertFavorite(favorite);
   }
 
+  Future<void> insertFavorite(Favorite favorite) async {
+    await _database.insertFavorite(favorite);
+  }
+
   Future<void> removeFavorite(
     String streamId,
     ContentType contentType, {
     String? episodeId,
   }) async {
-    final playlistId = AppState.currentPlaylist!.id;
+    final playlist = AppState.currentPlaylist;
+    if (playlist == null) return;
+    final playlistId = playlist.id;
 
     final favorites = await _database.getFavoritesByPlaylist(playlistId);
     final favorite = favorites.firstWhere(
@@ -67,7 +76,8 @@ class FavoritesRepository {
     ContentType contentType, {
     String? episodeId,
   }) async {
-    final playlistId = AppState.currentPlaylist!.id;
+    final playlistId = AppState.currentPlaylist?.id;
+    if (playlistId == null) return false;
     return await _database.isFavorite(
       playlistId,
       streamId,
@@ -77,14 +87,16 @@ class FavoritesRepository {
   }
 
   Future<List<Favorite>> getAllFavorites() async {
-    final playlistId = AppState.currentPlaylist!.id;
+    final playlistId = AppState.currentPlaylist?.id;
+    if (playlistId == null) return [];
     return await _database.getFavoritesByPlaylist(playlistId);
   }
 
   Future<List<Favorite>> getFavoritesByContentType(
     ContentType contentType,
   ) async {
-    final playlistId = AppState.currentPlaylist!.id;
+    final playlistId = AppState.currentPlaylist?.id;
+    if (playlistId == null) return [];
     return await _database.getFavoritesByContentType(playlistId, contentType);
   }
 
@@ -101,12 +113,14 @@ class FavoritesRepository {
   }
 
   Future<int> getFavoriteCount() async {
-    final playlistId = AppState.currentPlaylist!.id;
+    final playlistId = AppState.currentPlaylist?.id;
+    if (playlistId == null) return 0;
     return await _database.getFavoriteCount(playlistId);
   }
 
   Future<int> getFavoriteCountByContentType(ContentType contentType) async {
-    final playlistId = AppState.currentPlaylist!.id;
+    final playlistId = AppState.currentPlaylist?.id;
+    if (playlistId == null) return 0;
     return await _database.getFavoriteCountByContentType(
       playlistId,
       contentType,
@@ -114,7 +128,9 @@ class FavoritesRepository {
   }
 
   Future<bool> toggleFavorite(ContentItem contentItem) async {
-    final playlistId = AppState.currentPlaylist!.id;
+    final playlistId = AppState.currentPlaylist?.id;
+    if (playlistId == null) return false;
+
     final isCurrentlyFavorite = await _database.isFavorite(
       playlistId,
       contentItem.id,
@@ -139,7 +155,8 @@ class FavoritesRepository {
   }
 
   Future<void> clearAllFavorites() async {
-    final playlistId = AppState.currentPlaylist!.id;
+    final playlistId = AppState.currentPlaylist?.id;
+    if (playlistId == null) return;
     final favorites = await _database.getFavoritesByPlaylist(playlistId);
 
     for (final favorite in favorites) {
@@ -149,8 +166,12 @@ class FavoritesRepository {
 
   Future<ContentItem?> getContentItemFromFavorite(Favorite favorite) async {
     try {
+      final currentPlaylist = AppState.currentPlaylist;
+      if (currentPlaylist == null) return null;
+
       if (isXtreamCode) {
-        final repository = AppState.xtreamCodeRepository!;
+        final repository = AppState.xtreamCodeRepository;
+        if (repository == null) return null;
 
         switch (favorite.contentType) {
           case ContentType.liveStream:
@@ -172,7 +193,7 @@ class FavoritesRepository {
           case ContentType.vod:
             final movie = await _database.findMovieById(
               favorite.streamId,
-              AppState.currentPlaylist!.id,
+              currentPlaylist.id,
             );
 
             if (movie != null) {
@@ -188,7 +209,7 @@ class FavoritesRepository {
             break;
           case ContentType.series:
             final series = await repository.getSeries(categoryId: '');
-            final seriesStream = series?.firstWhere(
+            final seriesStream = series?.firstWhereOrNull(
               (serie) => serie.seriesId == favorite.streamId,
             );
             if (seriesStream != null) {

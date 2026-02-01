@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:another_iptv_player/models/category_view_model.dart';
-import 'package:another_iptv_player/models/playlist_content_model.dart';
+import 'package:lumio/models/category_view_model.dart';
+import 'package:lumio/models/playlist_content_model.dart';
 import '../services/content_service.dart';
 
 class CategoryDetailController extends ChangeNotifier {
   final CategoryViewModel category;
   final ContentService _contentService = ContentService();
 
-  CategoryDetailController(this.category) {
-    loadContent();
+  CategoryDetailController(this.category);
+
+  Future<void> init() async {
+    await loadContent();
   }
 
   // --- State ---
@@ -134,8 +136,8 @@ class CategoryDetailController extends ChangeNotifier {
         break;
       case "release_date":
         list.sort((a, b) {
-          final dateA;
-          final dateB;
+          final  dateA;
+          final  dateB;
           if (a.contentType.name == "series") {
             dateA = DateTime.tryParse(a.seriesStream?.releaseDate ?? '') ?? DateTime(1970);
             dateB = DateTime.tryParse(b.seriesStream?.releaseDate ?? '') ?? DateTime(1970);
@@ -148,8 +150,8 @@ class CategoryDetailController extends ChangeNotifier {
         break;
       case "rating":
         list.sort((a, b) {
-          final ratingA;
-          final ratingB;
+          final double ratingA;
+          final double ratingB;
           if (a.contentType.name == "series") {
             ratingA = double.tryParse(a.seriesStream?.rating ?? '0') ?? 0.0;
             ratingB = double.tryParse(b.seriesStream?.rating ?? '0') ?? 0.0;

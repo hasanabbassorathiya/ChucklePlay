@@ -117,8 +117,14 @@ abstract class AppLocalizations {
   /// No description provided for @slogan.
   ///
   /// In en, this message translates to:
-  /// **'Open Source IPTV Player'**
+  /// **'Your World of Streaming.'**
   String get slogan;
+
+  /// No description provided for @home.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get home;
 
   /// No description provided for @search.
   ///
@@ -707,6 +713,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Favorites'**
   String get favorites;
+
+  /// No description provided for @no_favorites_found.
+  ///
+  /// In en, this message translates to:
+  /// **'No favorites found'**
+  String get no_favorites_found;
 
   /// No description provided for @see_all_favorites.
   ///

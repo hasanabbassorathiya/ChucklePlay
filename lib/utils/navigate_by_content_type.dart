@@ -1,12 +1,12 @@
-import 'package:another_iptv_player/screens/m3u/series/m3u_series_screen.dart';
-import 'package:another_iptv_player/utils/get_playlist_type.dart';
+import 'package:lumio/features/player/m3u_series_screen.dart';
+import 'package:lumio/utils/get_playlist_type.dart';
 import 'package:flutter/material.dart';
-import 'package:another_iptv_player/models/content_type.dart';
-import 'package:another_iptv_player/models/playlist_content_model.dart';
-import '../screens/live_stream/live_stream_screen.dart';
-import '../screens/m3u/m3u_player_screen.dart';
-import '../screens/movies/movie_screen.dart';
-import '../screens/series/series_screen.dart';
+import 'package:lumio/models/content_type.dart';
+import 'package:lumio/models/playlist_content_model.dart';
+import 'package:lumio/features/player/live_stream_screen.dart';
+import 'package:lumio/features/player/m3u_player_screen.dart';
+import 'package:lumio/features/player/movie_screen.dart';
+import 'package:lumio/features/player/series_screen.dart';
 
 void navigateByContentType(BuildContext context, ContentItem content) {
   if (isM3u &&
@@ -38,6 +38,7 @@ void navigateByContentType(BuildContext context, ContentItem content) {
           builder: (context) => LiveStreamScreen(content: content),
         ),
       );
+      break;
     case ContentType.vod:
       Navigator.push(
         context,
@@ -45,6 +46,7 @@ void navigateByContentType(BuildContext context, ContentItem content) {
           builder: (context) => MovieScreen(contentItem: content),
         ),
       );
+      break;
     case ContentType.series:
       if (isXtreamCode) {
         Navigator.push(
@@ -61,5 +63,6 @@ void navigateByContentType(BuildContext context, ContentItem content) {
           ),
         );
       }
+      break;
   }
 }

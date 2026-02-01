@@ -1,22 +1,30 @@
-import 'package:another_iptv_player/l10n/localization_extension.dart';
+import 'package:lumio/features/playlist/xtream_code_data_loader_screen.dart';
+import 'package:lumio/l10n/localization_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:another_iptv_player/models/category_view_model.dart';
-import 'package:another_iptv_player/models/content_type.dart';
-import 'package:another_iptv_player/models/playlist_content_model.dart';
-import 'package:another_iptv_player/models/view_state.dart';
-import 'package:another_iptv_player/repositories/iptv_repository.dart';
-import 'package:another_iptv_player/services/app_state.dart';
+import 'package:lumio/models/category_view_model.dart';
+import 'package:lumio/models/content_type.dart';
+import 'package:lumio/models/playlist_content_model.dart';
+import 'package:lumio/models/view_state.dart';
+import 'package:lumio/repositories/iptv_repository.dart';
+import 'package:lumio/services/app_state.dart';
 import '../repositories/user_preferences.dart';
-import '../screens/xtream-codes/xtream_code_data_loader_screen.dart';
 
 class XtreamCodeHomeController extends ChangeNotifier {
   late PageController _pageController;
-  final IptvRepository _repository = AppState.xtreamCodeRepository!;
+  final IptvRepository? _manualRepository;
   String? _errorMessage;
   ViewState _viewState = ViewState.idle;
 
+  IptvRepository get _repository {
+    final repo = _manualRepository ?? AppState.xtreamCodeRepository;
+    if (repo == null) {
+      throw StateError('XtreamCodeHomeController: No repository available. AppState.xtreamCodeRepository is null.');
+    }
+    return repo;
+  }
+
   int _currentIndex = 0;
-  final bool _isLoading = false;
+  bool _isLoading = false;
 
   final List<CategoryViewModel> _liveCategories = [];
   final List<CategoryViewModel> _movieCategories = [];
@@ -71,9 +79,13 @@ class XtreamCodeHomeController extends ChangeNotifier {
 
   List<CategoryViewModel> get seriesCategories => _seriesCategories;
 
-  XtreamCodeHomeController(bool all) {
+  XtreamCodeHomeController({bool all = true, IptvRepository? repository}) : _manualRepository = repository {
     _pageController = PageController();
-    _loadCategories(all);
+  }
+
+  Future<void> init(bool all) async {
+    if (_isLoading && _liveCategories.isNotEmpty) return;
+    await _loadCategories(all);
   }
 
   @override
@@ -111,9 +123,11 @@ class XtreamCodeHomeController extends ChangeNotifier {
       case 3:
         return context.loc.series_plural;
       case 4:
+        return 'EPG'; // TODO: Add to localization
+      case 5:
         return context.loc.settings;
       default:
-        return 'Another IPTV Player';
+        return 'Lumio';
     }
   }
 
@@ -249,11 +263,14 @@ class XtreamCodeHomeController extends ChangeNotifier {
   }
 
   refreshAllData(BuildContext context) {
+    final playlist = AppState.currentPlaylist;
+    if (playlist == null) return;
+
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => XtreamCodeDataLoaderScreen(
-          playlist: AppState.currentPlaylist!,
+          playlist: playlist,
           refreshAll: true,
         ),
       ),

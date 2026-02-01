@@ -1,10 +1,10 @@
 import { defineConfig } from "vitepress";
 
 export default defineConfig({
-  title: "Another IPTV Player",
+  title: "Lumio Player",
   description: "Free & Open Source",
   sitemap: {
-    hostname: "https://another-iptv-player.com",
+    hostname: "https://lumio-player.com",
   },
   head: [
     [
@@ -39,7 +39,7 @@ export default defineConfig({
     socialLinks: [
       {
         icon: "github",
-        link: "https://github.com/bsogulcan/another-iptv-player",
+        link: "https://github.com/lumio/lumio-player",
       },
     ],
   },

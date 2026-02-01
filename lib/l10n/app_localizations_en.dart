@@ -9,7 +9,10 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get slogan => 'Open Source IPTV Player';
+  String get slogan => 'Your World of Streaming.';
+
+  @override
+  String get home => 'Home';
 
   @override
   String get search => 'Search';
@@ -315,6 +318,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get favorites => 'Favorites';
+
+  @override
+  String get no_favorites_found => 'No favorites found';
 
   @override
   String get see_all_favorites => 'See All';

@@ -1,6 +1,7 @@
 import 'dart:convert' show utf8;
-import 'dart:io' show File, HttpClient;
-import 'package:another_iptv_player/models/content_type.dart';
+import 'dart:io' show File;
+import 'package:lumio/models/content_type.dart';
+import 'package:http/http.dart' as http;
 import 'package:uuid/uuid.dart';
 import '../models/m3u_item.dart';
 
@@ -30,9 +31,7 @@ class M3uParser {
 
   static Future<List<M3uItem>> parseUrl(String playlistId, String url) async {
     try {
-      final client = HttpClient();
-      final request = await client.getUrl(Uri.parse(url));
-      final response = await request.close();
+      final response = await http.get(Uri.parse(url));
 
       if (response.statusCode != 200) {
         throw Exception(
@@ -40,8 +39,7 @@ class M3uParser {
         );
       }
 
-      final content = await response.transform(utf8.decoder).join();
-      client.close();
+      final content = utf8.decode(response.bodyBytes);
       return parseM3u(playlistId, content);
     } catch (e) {
       print('M3U URL parse error: $e');

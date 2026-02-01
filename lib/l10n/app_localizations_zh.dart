@@ -12,6 +12,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get slogan => '开源IPTV播放器';
 
   @override
+  String get home => 'Home';
+
+  @override
   String get search => '搜索';
 
   @override
@@ -313,6 +316,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get favorites => '收藏';
+
+  @override
+  String get no_favorites_found => 'No favorites found';
 
   @override
   String get see_all_favorites => '查看全部';

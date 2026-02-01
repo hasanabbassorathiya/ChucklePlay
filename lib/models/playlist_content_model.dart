@@ -1,10 +1,10 @@
-import 'package:another_iptv_player/models/content_type.dart';
-import 'package:another_iptv_player/models/live_stream.dart';
-import 'package:another_iptv_player/models/m3u_item.dart';
-import 'package:another_iptv_player/models/series.dart';
-import 'package:another_iptv_player/models/vod_streams.dart';
-import 'package:another_iptv_player/utils/build_media_url.dart';
-import 'package:another_iptv_player/utils/get_playlist_type.dart';
+import 'package:lumio/models/content_type.dart';
+import 'package:lumio/models/live_stream.dart';
+import 'package:lumio/models/m3u_item.dart';
+import 'package:lumio/models/series.dart';
+import 'package:lumio/models/vod_streams.dart';
+import 'package:lumio/utils/build_media_url.dart';
+import 'package:lumio/utils/get_playlist_type.dart';
 
 class ContentItem {
   final String id;
